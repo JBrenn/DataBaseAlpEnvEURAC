@@ -1,0 +1,12 @@
+Package: DataBaseAlpEnvEURAC
+Version: 0.1
+Date: 2015-02-24
+Title: Functions for data retrieval (EURAC, Province Bolzano)
+Author: Johannes Brenner <Johannes.Brenner@eurac.com>
+Maintainer: Johannes Brenner <Johannes.Brenner@eurac.com>
+Description: Read data from AlpEnv micro-meteo stations in Mazia/Matsch. Process data downloaded from WISKI database (Province of Bolzano)
+Depends: R (>= 3.0.3)
+License: LGPL (>= 2)
+Imports:
+    chron,
+    zoo
