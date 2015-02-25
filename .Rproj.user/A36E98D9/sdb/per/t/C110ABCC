@@ -1,0 +1,17 @@
+{
+    "contents" : "\\name{dB_readStationData}\n\\alias{dB_readStationData}\n%- Also NEED an '\\alias' for EACH other topic documented here.\n\\title{\nGet data from EURAC micro-meteo station (Mazia/Matsch)\n}\n\\description{\nRetrieve data from EURAC micro-meteo station located in Mazia/Matsch\n}\n\\usage{\ndB_readStationData(path, header.file, station)\n}\n%- maybe also 'usage' for other objects documented here.\n\\arguments{\n  \\item{path}{\n  path to meteo files\n  }\n  \\item{header.file}{\n  header file, absolute path and file name\n  }\n  \\item{station}{\n  character, full name of micro-meteo station, e.g. \"B2\"\n  }\n}\n\n\\details{\n%%  ~~ If necessary, more details than the description above ~~\n}\n\\value{\n%%  ~Describe the value returned\n%%  If it is a LIST, use\n%%  \\item{comp1 }{Description of 'comp1'}\n%%  \\item{comp2 }{Description of 'comp2'}\n%% ...\n}\n\\references{\n%% ~put references to the literature/web site here ~\n}\n\\author{\nJohannes Brenner, \\email{Johannes.Brenner@eurac.edu}\n}\n\\note{\nMeteo files are manually preprocessed; storage location: \\file{//ABZ02FST.EURAC.EDU/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia}\n}\n\n%% ~Make other sections like Warning with \\section{Warning }{....} ~\n\n\\seealso{\n%% ~~objects to See Also as \\code{\\link{help}}, ~~~\n}\n\\examples{\n}\n% Add one or more standard keywords, see file 'KEYWORDS' in the\n% R documentation directory.\n%\\keyword{ ~kwd1 }\n%\\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line\n",
+    "created" : 1424790935677.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1473160639",
+    "id" : "C110ABCC",
+    "lastKnownWriteTime" : 1424794138,
+    "path" : "~/GitHub/DataBaseAlpEnvEURAC/man/dB_readStationData.Rd",
+    "project_path" : "man/dB_readStationData.Rd",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_doc"
+}
