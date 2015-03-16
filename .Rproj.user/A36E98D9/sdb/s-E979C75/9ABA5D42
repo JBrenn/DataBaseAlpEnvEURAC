@@ -1,0 +1,17 @@
+{
+    "contents" : "\\name{dB_readZRX}\n\\alias{dB_readZRX}\n%- Also NEED an '\\alias' for EACH other topic documented here.\n\\title{\nread ZRX data file (WISKI, batch download)\n}\n\\description{\nread ZRX data file (Province Bozen/Bolzano, WISKI, batch download); general quality check | min and max, variable dependent; hourly aggregation (mean - sum) possible}\n\\usage{\ndB_readZRX(file, do.hourly=FALSE, do.quality=FALSE, chron=FALSE)\n}\n%- maybe also 'usage' for other objects documented here.\n\\arguments{\n  \\item{file}{\n  ZRX file name (absolute path)\n  }\n  \\item{do.hourly}{\n  boolean, TRUE: hourly aggregation of data, variable specific\n  }\n  \\item{do.quality}{\n  boolean, TRUE: general quality check (min - max)\n  }\n  \\item{chron}{\n  boolean, TRUE: chron object for datetime representation, FALSE: POSIX object for datetime representation\n  }\n}\n\\details{\n%%  ~~ If necessary, more details than the description above ~~\n}\n\\value{\n%%  ~Describe the value returned\n%%  If it is a LIST, use\n%%  \\item{comp1 }{Description of 'comp1'}\n%%  \\item{comp2 }{Description of 'comp2'}\n%% ...\nLIST\n\\item{data} {list, zoo time series object for each station}\n\\item{meta} {data frame, station meta data}\n}\n\\references{\n%% ~put references to the literature/web site here ~\n}\n\\author{\nJohannes Brenner, \\email{Johannes.Brenner@eurac.edu}\n}\n\\note{\n%%  ~~further notes~~\n}\n\n%% ~Make other sections like Warning with \\section{Warning }{....} ~\n\n\\seealso{\n%% ~~objects to See Also as \\code{\\link{help}}, ~~~\n}\n\\examples{\n\n}\n% Add one or more standard keywords, see file 'KEYWORDS' in the\n% R documentation directory.\n%\\keyword{ ~kwd1 }\n%\\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line\n",
+    "created" : 1424966303227.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1016395024",
+    "id" : "9ABA5D42",
+    "lastKnownWriteTime" : 1424967726,
+    "path" : "~/GitHub/DataBaseAlpEnvEURAC/man/dB_readZRX.Rd",
+    "project_path" : "man/dB_readZRX.Rd",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_doc"
+}

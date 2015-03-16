@@ -1,0 +1,16 @@
+{
+    "contents" : "Package: DataBaseAlpEnvEURAC\nVersion: 0.1\nDate: 2015-02-24\nTitle: Functions for data retrieval (EURAC, Province Bolzano)\nAuthor: Johannes Brenner <Johannes.Brenner@eurac.com>\nMaintainer: Johannes Brenner <Johannes.Brenner@eurac.com>\nDescription: Read data from AlpEnv micro-meteo stations in Mazia/Matsch. Process data downloaded from WISKI database (Province of Bolzano)\nLazyData: Yes\nLazyLoad: Yes\nDepends: R (>= 3.0.3)\nLicense: LGPL (>= 2)\nImports:\n    chron,\n    zoo",
+    "created" : 1424966244598.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "908669253",
+    "id" : "73E3FC1C",
+    "lastKnownWriteTime" : 1426522587,
+    "path" : "~/GitHub/DataBaseAlpEnvEURAC/DESCRIPTION",
+    "project_path" : "DESCRIPTION",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "dcf"
+}

@@ -1,0 +1,17 @@
+{
+    "contents" : "\\name{dB_readZRX2station}\n\\alias{dB_readZRX2station}\n%- Also NEED an '\\alias' for EACH other topic documented here.\n\\title{\nprocess ZRX data files (WISKI, batch download) with function \\command{readZRX}\n}\n\\description{\nprocess ZRX data files (Province of Bozen/Bolzano, WISKI, batch download) with function \\command{readZRX}: general quality check | min - max variable dependent, hourly aggregation (mean - sum) possible. Return .csv file for each station containing available variables.\n}\n\\usage{\ndB_readZRX2station(files, write_csv, output_path, do.hourly, do.quality, chron)\n}\n%- maybe also 'usage' for other objects documented here.\n\\arguments{\n  \\item{files}{\n  ZRX files name (absolute path)\n  }\n  \\item{write_csv}{\n  boolean, TRUE: .csv data files for each station are written\n  }\n  \\item{output_path}{\n  path to which .csv files are written\n  }\n  \\item{do.hourly}{\n  boolean, TRUE: hourly aggregation of data, variable specific\n  }\n  \\item{do.quality}{\n  boolean, TRUE: general quality check (min - max)\n  }\n  \\item{chron}{\n  boolean, TRUE: chron object for datetime representation, FALSE: POSIX object for datetime representation\n  }\n}\n\\details{\n%%  ~~ If necessary, more details than the description above ~~\n}\n\\value{\n%%  ~Describe the value returned\n%%  If it is a LIST, use\n%%  \\item{comp1 }{Description of 'comp1'}\n%%  \\item{comp2 }{Description of 'comp2'}\n%% ...\nList of zoo objects, for each station available variables are summarized in a zoo object\n}\n\\references{\n%% ~put references to the literature/web site here ~\n}\n\\author{\nJohannes Brenner, \\email{Johannes.Brenner@eurac.edu}\n}\n\\note{\n%%  ~~further notes~~\n}\n\n%% ~Make other sections like Warning with \\section{Warning }{....} ~\n\n\\seealso{\n%% ~~objects to See Also as \\code{\\link{help}}, ~~~\n}\n\\examples{\n\n}\n% Add one or more standard keywords, see file 'KEYWORDS' in the\n% R documentation directory.\n%\\keyword{ ~kwd1 }\n%\\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line\n",
+    "created" : 1424967780000.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1466589313",
+    "id" : "641C94B",
+    "lastKnownWriteTime" : 1424968426,
+    "path" : "~/GitHub/DataBaseAlpEnvEURAC/man/dB_readZRX2station.Rd",
+    "project_path" : "man/dB_readZRX2station.Rd",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_doc"
+}

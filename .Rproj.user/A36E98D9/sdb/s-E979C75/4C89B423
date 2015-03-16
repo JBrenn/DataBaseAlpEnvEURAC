@@ -1,0 +1,16 @@
+{
+    "contents" : "# get meteorological data for e.g. GEOtop - input\n\n# ARGUMENTS\n# path2files    path to meteo files\n# header.file   header file\n# station       station specification\n# cols          column names to extract\n# plot          should data be ploted?\n# pdf.name      name of output pdf, if plot=TRUE\n# mkreg         make regular zoo object\n\n#Date,JDfrom0,Iprec,WindSp,WindDir,RelHum,AirT,Swglobal\n#time(data),julian(x,origin=as.POSIXct(\"1960-01-01 00:00:00\")),Rain,WindSpeed,WindDirection,RH,Temp,SolarRadiation\n\ndB_getMETEO <- function(path2files, header.file, station, \n                        cols = c(\"Rain\",\"WindSpeed\",\"WindDirection\",\"RH\",\"Temp\",\"SolarRadiation\"), \n                        plot=FALSE, pdf.name, mkreg=FALSE)\n{\n  # source functions\n  #source(\"H:/Projekte/HiResAlp/06_Workspace/BrJ/04_R_data_analyses/data_base/FUN_readStationData2zoo.R\")\n  \n  #require(\"zoo\")\n  \n  data <- dB_read_station(path = path2files, header.file = header.file, station=station)\n  \n  data <- data[,names(data) %in% cols]\n  \n  if (plot) {\n    pdf(pdf.name)\n    donotplot <- c(grep(pattern = \"TS\", names(data)), grep(pattern = \"SWC\", names(data)))\n    plot(data[,-donotplot], main=pdf.name)\n    dev.off()\n  } \n  \n  # if time series is not strictlly regular: set missing timesteps to NA\n  # e.g. for M1 | 2013-05-27 to 2013-10-08\n  if (mkreg)\n  {\n    require(\"chron\")\n    g <- zoo(x = NA, seq(head(index(data),1),tail(index(data),1),by=\"15 min\"))\n    data <- merge(data,g)[,1:length(cols)]\n    #names(data) <- names(data)[-length(names(data))]\n  }\n  \n \n  return(data)\n}\n\n",
+    "created" : 1425550301083.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2687433006",
+    "id" : "4C89B423",
+    "lastKnownWriteTime" : 1425550761,
+    "path" : "~/GitHub/DataBaseAlpEnvEURAC/R/dB_getMETEO.R",
+    "project_path" : "R/dB_getMETEO.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

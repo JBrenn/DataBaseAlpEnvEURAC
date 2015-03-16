@@ -1,0 +1,17 @@
+{
+    "contents" : "\\name{dB_getGEOtop}\n\\alias{dB_getGEOtop}\n%- Also NEED an '\\alias' for EACH other topic documented here.\n\\title{\nGet meteorological data from micro-meteo station (Mazia/Matsch) in GEOtop format\n}\n\\description{\nCreate GEOtop meteo input file from raw micro-meteo station (Mazia/Matsch) for a specific time frame\n}\n\\usage{\ndB_getGEOtop(path2files, header.file, station, READvar = c(\"Rain\",\"WindSpeed\",\"WindDirection\",\"RH\",\"Temp\",\"SolarRadiation\"), var2geotop = c(\"Rain\",\"WindSpeed\",\"WindDirection\",\"RH\",\"Temp\",\"SolarRadiation\", \"CloudTrans\"), GEOtopVAR= c(\"Iprec\", \"WindSp\", \"WindDir\", \"RelHum\", \"AirT\", \"SWglobal\", \"CloudTrans\"), mkreg=FALSE,  aggr_time, cut_date=FALSE, time_window, file.name, skipwinter=FALSE, TempThresh=-2, tz=\"Etc/GMT-1\")\n}\n%- maybe also 'usage' for other objects documented here.\n\\arguments{\n  \\item{path2files}{\n  path to meteo files\n  }\n  \\item{header.file}{\n  header file, absolute path and file name\n  }\n  \\item{station}{\n  station specification, e.g. \"B2\"\n  }\n  \\item{READvar}{\n  variables to selecting for retrieving data\n  }\n  \\item{var2geotop}{\n  variables included in GEOtop input file (previous names)\n  }\n  \\item{GEOtopVAR}{\n  variables included in GEOtop input file (GEOtop names) \n  }\n  \\item{mkreg}{\n  make time series data regular\n  }\n  \\item{aggr_time}{\n  character, time aggregation applied. \"n\" no aggregation of raw data,\"h\": hourly, \"d\": daily\n  }\n  \\item{cut_date}{\n  boolean, TRUE: data is retrieved for specific time period; FALSE: data is retrieved for time period available; default = FALSE\n  }\n  \\item{time_window}{\n  as.POSIXct vector, start and end datetime for the period data should be retrieved\n  }\n  \\item{file.name}{\n  name of file written out\n  }\n  \\item{skipwinter}{\n  boolean, set winter precipitation NA; adjustable by the argument \\command{TempThresh}, see below\n  }\n  \\item{TempThresh}{\n  air temperature threshold for setting precipitation NA\n  }\n  \\item{tz}{\n  timezone spezification\n  }\n}\n\\details{\n%%  ~~ If necessary, more details than the description above ~~\n}\n\\value{\n%%  ~Describe the value returned\n%%  If it is a LIST, use\n%%  \\item{comp1 }{Description of 'comp1'}\n%%  \\item{comp2 }{Description of 'comp2'}\n%% ...\n}\n\\references{\n%% ~put references to the literature/web site here ~\n}\n\\author{\nJohannes Brenner, \\email{Johannes.Brenner@eurac.edu}\n}\n\\note{\n%%  ~~further notes~~\n}\n\n%% ~Make other sections like Warning with \\section{Warning }{....} ~\n\n\\seealso{\n%% ~~objects to See Also as \\code{\\link{help}}, ~~~\n}\n\\examples{\n\n}\n% Add one or more standard keywords, see file 'KEYWORDS' in the\n% R documentation directory.\n%\\keyword{ ~kwd1 }\n%\\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line\n",
+    "created" : 1425550434291.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1726899445",
+    "id" : "4AB4AE0F",
+    "lastKnownWriteTime" : 1424947658,
+    "path" : "~/GitHub/DataBaseAlpEnvEURAC/man/dB_getGEOtop.Rd",
+    "project_path" : "man/dB_getGEOtop.Rd",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_doc"
+}

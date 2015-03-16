@@ -1,14 +1,14 @@
-\name{dB_getSWC}
-\alias{dB_getSWC}
+\name{dB_getSWP}
+\alias{dB_getSWP}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Get soil moisture data from EURAC micro-meteo station (Mazia/Matsch)
+\title{Get soil water potential data from EURAC micro-meteo station (Mazia/Matsch)
 %%  ~~function to do ... ~~
 }
 \description{
-Retrieve soil moisture data from EURAC micro-meteo station located in Mazia/Matsch
+Retrieve soil potential data from EURAC micro-meteo station located in Mazia/Matsch
 }
 \usage{
-dB_getSWC(path2files, header.file, station, station_nr, calibration, calibration_file, aggregation, minVALUE=0.05, maxVALUE=0.50, clear_raw_data=FALSE, remove_freezing=FALSE, write.csv=FALSE, path2write)
+dB_getSWP(path2files = "H:/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/B/B2/", header.file = "H:/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/B/header_B2.txt", station="B", station_nr=2, aggregation, minVALUE=-2000, maxVALUE=2000, clear_raw_data=FALSE, write.csv=FALSE, path2write)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -19,31 +19,22 @@ dB_getSWC(path2files, header.file, station, station_nr, calibration, calibration
   header file, absolute path and file name
   }
    \item{station}{
-  character, name of micro-meteo station, e.g. "B"
+  character, name of micro-meteo station, default "B"
   }
   \item{station_nr}{
-  integer, number of micro-meteo station, e.g. 2
-  }
-  \item{calibration}{
-  boolean, TRUE: calibrated SMC sensor data is used for comparision with simulated SMC; FALSE: use of uncalibrated SMC data
-  }
-    \item{calibration_file}{
-  path and file name of file containing calibration functions for specific stations/sensors
+  integer, number of micro-meteo station, default 2
   }
   \item{aggregation}{
   character, time aggregation applied. "n" no aggregation of raw data,"h": hourly, "d": daily
   }
   \item{minVALUE}{
-  numeric, minimum value of soil temperature for filtering, default = 5 vol\%
+  numeric, minimum value of soil temperature for filtering, default = -2000 hPa
   }
   \item{maxVALUE}{
-  numeric, maximum value of soil temperature for filtering, default = 50 vol\%
+  numeric, maximum value of soil temperature for filtering, default = 2000 hPa
   }
   \item{clear_raw_data}{
   boolean, TRUE: clearing of raw data, not yet implemented, default = FALSE
-  }
-  \item{remove_freezing}{
-  boolean, TRUE: freezing periods are remove from raw data; only possible for B, P and I stations, default = FALSE
   }
   \item{write.csv}{
   boolean, TRUE: .csv file is written to path2write, FALSE: no .csv file is written, default = FALSE
@@ -73,11 +64,10 @@ dB_getSWC(path2files, header.file, station, station_nr, calibration, calibration
 Johannes Brenner, \email{Johannes.Brenner@eurac.edu}
 }
 \note{
-calibration file is stored here: \file{//ABZ02FST.EURAC.EDU/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/calibration.csv}
+Only station measuring soil water potential is station B2
 }
 \seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
 }
-

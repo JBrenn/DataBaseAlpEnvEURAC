@@ -1,0 +1,17 @@
+{
+    "contents" : "\\name{dB_getMETEO}\n\\alias{dB_getMETEO}\n%- Also NEED an '\\alias' for EACH other topic documented here.\n\\title{\nGet meteorological data from micro-meteo station (Mazia/Matsch)\n}\n\\description{\nGEt raw micro-meteo station data (Mazia/Matsch)\n}\n\\usage{\ndB_getMETEO(path2files, header.file, station, cols = c(\"Rain\",\"WindSpeed\",\"WindDirection\",\"RH\",\"Temp\",\"SolarRadiation\"), plot=FALSE, pdf.name, mkreg=FALSE)\n}\n%- maybe also 'usage' for other objects documented here.\n\\arguments{\n  \\item{path2files}{\n  path to meteo files\n  }\n  \\item{header.file}{\n  header file, absolute path and file name\n  }\n  \\item{station}{\n  station specification, e.g. \"B2\"\n  }\n  \\item{cols}{\n  variables to selecting for retrieving data\n  }\n  \\item{plot}{\n   boolean, if TRUE: zoo object is visualized in pdf\n  }\n  \\item{pdf.name}{\n  name of pdf file\n  }\n  \\item{mkreg}{\n  boolean; if TRUE: make time series data regular\n  }\n}\n\\details{\n%%  ~~ If necessary, more details than the description above ~~\n}\n\\value{\n%%  ~Describe the value returned\n%%  If it is a LIST, use\n%%  \\item{comp1 }{Description of 'comp1'}\n%%  \\item{comp2 }{Description of 'comp2'}\n%% ...\n}\n\\references{\n%% ~put references to the literature/web site here ~\n}\n\\author{\nJohannes Brenner, \\email{Johannes.Brenner@eurac.edu}\n}\n\\note{\n%%  ~~further notes~~\n}\n\n%% ~Make other sections like Warning with \\section{Warning }{....} ~\n\n\\seealso{\n%% ~~objects to See Also as \\code{\\link{help}}, ~~~\n}\n\\examples{\n\n}\n% Add one or more standard keywords, see file 'KEYWORDS' in the\n% R documentation directory.\n%\\keyword{ ~kwd1 }\n%\\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line\n",
+    "created" : 1425550414162.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "279115617",
+    "id" : "B54D8F27",
+    "lastKnownWriteTime" : 1425550681,
+    "path" : "~/GitHub/DataBaseAlpEnvEURAC/man/dB_METEO.Rd",
+    "project_path" : "man/dB_METEO.Rd",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_doc"
+}

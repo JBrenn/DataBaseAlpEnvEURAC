@@ -1,0 +1,16 @@
+{
+    "contents" : "# truncate chron object\n# for usage in aggrgation of zoo-objects with chron date-times\n\ndB_trunc.minutes <- function (x, n.minutes) \n{\n  if (!inherits(x, \"times\")) \n    x <- as.chron(x = x)\n  x <- as.numeric(x)\n  sec <- round(24 * 3600 * abs(x - floor(x)))\n  h <- (sec%/%(n.minutes*60))/(60/n.minutes)\n  hour <- as.integer(h)\n  minutes <- (h %% hour) * 60\n  chron(dates=chron::dates(x), times=times(paste(hour, minutes, \"00\", sep=\":\")))\n}",
+    "created" : 1426522793299.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3345367356",
+    "id" : "F0B741B6",
+    "lastKnownWriteTime" : 1424968612,
+    "path" : "~/GitHub/DataBaseAlpEnvEURAC/R/dB_trunc.minutes.R",
+    "project_path" : "R/dB_trunc.minutes.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

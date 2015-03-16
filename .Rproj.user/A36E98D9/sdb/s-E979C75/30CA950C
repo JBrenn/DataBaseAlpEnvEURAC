@@ -1,12 +1,12 @@
 {
     "contents" : "# Default NAMESPACE created by R\n# Remove the previous line if you edit this file\n\nimport(chron)\nimport(zoo)\n\n# Export all names\nexportPattern(\".\")\n",
-    "created" : 1424790434495.000,
+    "created" : 1424968472599.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
     "hash" : "1768702977",
-    "id" : "8C66D65B",
-    "lastKnownWriteTime" : 1424790441,
+    "id" : "30CA950C",
+    "lastKnownWriteTime" : 1424852313,
     "path" : "~/GitHub/DataBaseAlpEnvEURAC/NAMESPACE",
     "project_path" : "NAMESPACE",
     "properties" : {
