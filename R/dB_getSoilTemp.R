@@ -105,7 +105,7 @@ dB_getSoilTemp <- function(path2files, header.file,
     file.name <- paste("SoilTemp_",aggregation,"_",cleared,station, station_nr, ".csv", sep="")
     print(paste("writing data to", path2write, file.name))
     
-    data2write <- data.frame(Date=substr(time(data),2,18),round(coredata(data),3))
+    data2write <- data.frame(Date=substr(time(data),2,17),round(coredata(data),3))
     write.csv(data2write, file.path(path2write,file.name), row.names=F, quote=F)
   }
   

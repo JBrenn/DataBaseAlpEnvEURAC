@@ -21,7 +21,7 @@ dB_getMETEO <- function(path2files, header.file, station,
   
   #require("zoo")
   
-  data <- dB_read_station(path = path2files, header.file = header.file, station=station)
+  data <- dB_readStationData(path = path2files, header.file = header.file, station=station)
   
   data <- data[,names(data) %in% cols]
   

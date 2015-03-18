@@ -31,13 +31,13 @@ dB_getSoilTemp(path2files, header.file, station, station_nr, aggregation, minVAL
   numeric, minimum value of soil temperature for filtering, default = -30 degC
   }
   \item{maxVALUE}{
-  numeric, maximum value of soil temperature for filtering, default = -30 degC
+  numeric, maximum value of soil temperature for filtering, default = +30 degC
   }
   \item{clear_raw_data}{
   boolean, TRUE: clearing of raw data, not yet implemented, default = FALSE
   }
   \item{write.csv}{
-  boolean, TRUE: .csv file is written to path2write, FALSE: no .csv file is written
+  boolean, default = FALSE; TRUE: .csv file is written to path2write, FALSE: no .csv file is written
   }
    \item{path2write}{
   path data should be written to

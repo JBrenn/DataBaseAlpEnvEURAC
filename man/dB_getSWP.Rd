@@ -37,7 +37,7 @@ dB_getSWP(path2files = "H:/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_da
   boolean, TRUE: clearing of raw data, not yet implemented, default = FALSE
   }
   \item{write.csv}{
-  boolean, TRUE: .csv file is written to path2write, FALSE: no .csv file is written, default = FALSE
+  boolean, default = FALSE; TRUE: .csv file is written to path2write, FALSE: no .csv file is written
   }
    \item{path2write}{
   path data should be written to

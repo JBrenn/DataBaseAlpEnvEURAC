@@ -46,7 +46,7 @@ dB_getSWC(path2files, header.file, station, station_nr, calibration, calibration
   boolean, TRUE: freezing periods are remove from raw data; only possible for B, P and I stations, default = FALSE
   }
   \item{write.csv}{
-  boolean, TRUE: .csv file is written to path2write, FALSE: no .csv file is written, default = FALSE
+  boolean, default = FALSE; TRUE: .csv file is written to path2write, FALSE: no .csv file is written
   }
    \item{path2write}{
   path data should be written to

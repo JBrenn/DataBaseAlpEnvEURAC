@@ -22,16 +22,16 @@ dB_getMETEO(path2files, header.file, station, cols = c("Rain","WindSpeed","WindD
   station specification, e.g. "B2"
   }
   \item{cols}{
-  variables to selecting for retrieving data
+  variables to selecting for retrieving data, default: c("Rain","WindSpeed","WindDirection","RH","Temp"","SolarRadiation")
   }
   \item{plot}{
-   boolean, if TRUE: zoo object is visualized in pdf
+   boolean, default = FALSE; if TRUE: zoo object is visualized in pdf
   }
   \item{pdf.name}{
   name of pdf file
   }
   \item{mkreg}{
-  boolean; if TRUE: make time series data regular
+  boolean, default = FALSE; if TRUE: make time series data regular
   }
 }
 \details{
