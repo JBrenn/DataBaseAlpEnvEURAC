@@ -13,7 +13,7 @@ dB_readZRX2station(files, write_csv, output_path, do.hourly, do.quality, chron)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{files}{
-  ZRX files name (absolute path)
+  ZRX files names (absolute paths)
   }
   \item{write_csv}{
   boolean, TRUE: .csv data files for each station are written

@@ -42,6 +42,33 @@ dB_getMETEO <- function(path2files, header.file, station,
     #names(data) <- names(data)[-length(names(data))]
   }
   
+  # daily aggregation
+  grepRain <- grep("Rain",cols)
+  
+  if (length(grepRain)==0){
+    if (aggregation == "d") data <- aggregate(x=data,by=as.Date(time(data)),FUN=mean, na.rm=T)
+    if (aggregation == "h") 
+    {
+      aggr_vec <- floor(as.numeric(time(data))*24)
+      data <- aggregate(x=data, by=aggr_vec, FUN=mean, na.rm=F)
+      data <- zoo(x =  coredata(data), order.by = chron(time(data)/24))
+    }
+  } else {
+    if (aggregation == "d") 
+    {
+      dataMet <- aggregate(x=data,by=as.Date(time(data)),FUN=mean, na.rm=T)
+      dataRain <- aggregate(x=data[,],by=as.Date(time(data)),FUN=sum, na.rm=T)
+    }
+      
+    if (aggregation == "h") 
+    {
+      aggr_vec <- floor(as.numeric(time(data))*24)
+      data <- aggregate(x=data, by=aggr_vec, FUN=mean, na.rm=F)
+      data <- zoo(x =  coredata(data), order.by = chron(time(data)/24))
+    }
+  }
+  
+  
   return(data)
 }
 

@@ -34,8 +34,8 @@ dB_readZRX(file, do.hourly=FALSE, do.quality=FALSE, chron=FALSE)
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
 LIST
-\item{data} {list, zoo time series object for each station}
-\item{meta} {data frame, station meta data}
+\item{data}{list, zoo time series object for each station}
+\item{meta}{data frame, station meta data}
 }
 \references{
 %% ~put references to the literature/web site here ~
