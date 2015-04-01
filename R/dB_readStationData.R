@@ -65,7 +65,7 @@ dB_readStationData <- function(path, header.file, station)
           dummy <- dummy[,-1]
           names(dummy) <- paste("V", 1:length(dummy), sep="")
         } else {
-          if (i=="M1_total_2014.csv") {
+          if (i=="M1_total_2014.csv" | i=="P3_YEAR_2015.csv") {
             dummy <- read.csv(file.path(path,i), skip=skip, header=FALSE, 
                               na.strings=c("NaN","7777","-888.88", "-999", "NAN"))
             dummy <- dummy[,1:dim(data)[2]]  

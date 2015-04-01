@@ -8,7 +8,7 @@ Get meteorological data from micro-meteo station (Mazia/Matsch) in GEOtop format
 Create GEOtop meteo input file from raw micro-meteo station (Mazia/Matsch) for a specific time frame
 }
 \usage{
-dB_getGEOtop(path2files, header.file, station, READvar = c("Rain","WindSpeed","WindDirection","RH","Temp","SolarRadiation"), var2geotop = c("Rain","WindSpeed","WindDirection","RH","Temp","SolarRadiation", "CloudTrans"), GEOtopVAR= c("Iprec", "WindSp", "WindDir", "RelHum", "AirT", "SWglobal", "CloudTrans"), mkreg=FALSE,  aggr_time, cut_date=FALSE, time_window, file.name, skipwinter=FALSE, TempThresh=-2, tz="Etc/GMT-1")
+dB_getGEOtop(path2files, header.file, station, READvar = c("Rain","WindSpeed","WindDirection","RH","Temp","SolarRadiation"), var2geotop = c("Rain","WindSpeed","WindDirection","RH","Temp","SolarRadiation", "CloudTrans"), GEOtopVAR= c("Iprec", "WindSp", "WindDir", "RelHum", "AirT", "SWglobal", "CloudTrans"), mkreg=FALSE,  aggr_time, cut_date=FALSE, time_window, file.name=NULL, skipwinter=FALSE, TempThresh=-2, tz="Etc/GMT-1")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -43,7 +43,7 @@ dB_getGEOtop(path2files, header.file, station, READvar = c("Rain","WindSpeed","W
   as.POSIXct vector, start and end datetime for the period data should be retrieved
   }
   \item{file.name}{
-  name of file written out
+  default = NULL; name of file written out
   }
   \item{skipwinter}{
   boolean, set winter precipitation NA; adjustable by the argument \command{TempThresh}, see below
@@ -59,11 +59,8 @@ dB_getGEOtop(path2files, header.file, station, READvar = c("Rain","WindSpeed","W
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+if file name provided GEOtop meteo input file
+if file.name=NULL zoo object containing meteo data
 }
 \references{
 %% ~put references to the literature/web site here ~

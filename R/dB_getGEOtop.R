@@ -33,7 +33,7 @@ dB_getGEOtop <- function(path2files, header.file,
                      aggr_time,
                      cut_date=FALSE,
                      time_window,
-                     file.name,
+                     file.name=NULL,
                      skipwinter=FALSE, TempThresh=-2, tz="Etc/GMT-1"
                      )
 {
@@ -222,6 +222,8 @@ dB_getGEOtop <- function(path2files, header.file,
   
   df <- data.frame(Date=Datetime, JDfrom0=JDfrom0, dummy)
   
-  write.table(x = df, file = file.name, sep = ",", quote = FALSE, row.names=FALSE)
+  if (!is.null(file.name))
+    write.table(x = df, file = file.name, sep = ",", quote = FALSE, row.names=FALSE)
   
+  return( zoo(df[,-1],Datetime) )
 }
