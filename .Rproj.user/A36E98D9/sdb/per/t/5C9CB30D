@@ -1,0 +1,22 @@
+{
+    "contents" : "",
+    "created" : 1428657722368.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "5C9CB30D",
+    "lastKnownWriteTime" : 0,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "caption" : "wind_B2_eddy",
+        "contentUrl" : "content?title=wind_B2_eddy&file=0392fd9d18df4459987b9dc8ae4978db.htm",
+        "displayedObservations" : 1000,
+        "displayedVariables" : 2,
+        "totalObservations" : 52608,
+        "variables" : 1
+    },
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

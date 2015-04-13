@@ -225,5 +225,7 @@ dB_getGEOtop <- function(path2files, header.file,
   if (!is.null(file.name))
     write.table(x = df, file = file.name, sep = ",", quote = FALSE, row.names=FALSE)
   
-  return( zoo(df[,-1],Datetime) )
+  df <- apply(df[,-1],2,as.numeric)
+  
+  return( zoo(df,chron(time(data)) ) )
 }

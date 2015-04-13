@@ -1,0 +1,17 @@
+{
+    "contents" : "library(chron)\nlibrary(zoo)\n\nP2 <- dB_getGEOtop(path2files = \"H:/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/P/P2/\", \n                   header.file = \"H:/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/P/header_P2.txt\",\n                   station = \"P2\",mkreg = F,file.name = \"meteoP2.txt\",aggr_time = \"h\")\n\nB2 <- dB_getGEOtop(path2files = \"H:/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/B/B2/\", \n                   header.file = \"H:/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/B/header_B2.txt\",\n                   station = \"B2\",mkreg = F,file.name = \"meteoB2.txt\",aggr_time = \"h\")\n\nWind_B2_eddy <- read.csv2(file = \"H:/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Wind_WoG/Windspeed_05_2011_04_2014.csv\", \n                          header=TRUE, na.strings=c(\"#NV\"))\nby <- substr(Wind_B2_eddy$Date_Time,1,13)\nWind_B2_h <- aggregate(as.numeric(as.character(Wind_B2_eddy$MeanU_ms)), by = list(by), FUN = mean)\n\ndatetime <- chron(dates. = substr(Wind_B2_eddy$Date_Time,1,10),times. = paste(substr(Wind_B2_eddy$Date_Time,12,13),\"00:00\",sep=\":\"), \n                  format = c(dates=\"d.m.y\", times=\"h:m:s\"), out.format=c(dates=\"d/m/y\", times=\"h:m:s\"))\ndatetime <- unique(datetime)\n\nwindSp <- ifelse(is.na(as.numeric(as.character(Wind_B2_eddy$MeanU_ms))), -9999, as.numeric(as.character(Wind_B2_eddy$MeanU_ms)))\n\nwind_B2_eddy <- zoo(windSp, datetime)\n\nB2_merge <- merge(B2, wind_B2_eddy)\nB2_merge$wind_B2_eddy <- ifelse(is.na(B2_merge$wind_B2_eddy), -9999, B2_merge$wind_B2_eddy)\nB2_merge$WindSp <- ifelse(is.na(B2_merge$WindSp), -9999, B2_merge$WindSp)\n\n# set wind_B2_eddy for NA values in B2$windS\n\ncoredata(B2$WindSp) <- ifelse(test = coredata(B2_merge$WindSp) == -9999, yes =  coredata(B2_merge$wind_B2_eddy), no = coredata(B2_merge$WindSp))\n\nDatetime <- substr(chron(time(B2), out.format = c(dates = \"d/m/y\", times = \"h:m:s\")),2,17)\n\ndf <- data.frame(Date=Datetime, coredata(B2))\n\nwrite.table(x = df, file = \"meteoB2_wind.txt\", sep = \",\", quote = FALSE, row.names=FALSE)\n\n# add sw global to P2 from B2\n\noverlap <- time(B2) %in% time(P2)\nP2$SWglobal <- B2$SWglobal[overlap]\n\nDatetime <- substr(chron(time(P2), out.format = c(dates = \"d/m/y\", times = \"h:m:s\")),2,17)\ndf <- data.frame(Date=Datetime, coredata(P2))\n\nwrite.table(x = df, file = \"meteoP2_SWg.txt\", sep = \",\", quote = FALSE, row.names=FALSE)\n\n",
+    "created" : 1428656872915.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "2592018311",
+    "id" : "1B9CCA72",
+    "lastKnownWriteTime" : 169873936,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
