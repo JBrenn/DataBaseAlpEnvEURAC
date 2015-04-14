@@ -8,7 +8,7 @@
 Retrieve soil moisture data from EURAC micro-meteo station located in Mazia/Matsch
 }
 \usage{
-dB_getSWC(path2files, header.file, station, station_nr, calibration, calibration_file, aggregation, minVALUE=0.05, maxVALUE=0.50, clear_raw_data=FALSE, remove_freezing=FALSE, write.csv=FALSE, path2write)
+dB_getSWC(path2files, header.file, station, station_nr, calibrate=FALSE, aggregation, minVALUE=0.05, maxVALUE=0.50, clear_raw_data=FALSE, remove_freezing=FALSE, write.csv=FALSE, path2write)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -24,11 +24,8 @@ dB_getSWC(path2files, header.file, station, station_nr, calibration, calibration
   \item{station_nr}{
   integer, number of micro-meteo station, e.g. 2
   }
-  \item{calibration}{
-  boolean, TRUE: calibrated SMC sensor data is used for comparision with simulated SMC; FALSE: use of uncalibrated SMC data
-  }
-    \item{calibration_file}{
-  path and file name of file containing calibration functions for specific stations/sensors
+  \item{calibrate}{
+  boolean, default FALSE: use of uncalibrated SMC data; TRUE: calibrated SMC sensor data is used for comparision with simulated SMC, calibration parameters are retrieved from the package data via \emph{data(calibration)}
   }
   \item{aggregation}{
   character, time aggregation applied. "n" no aggregation of raw data,"h": hourly, "d": daily

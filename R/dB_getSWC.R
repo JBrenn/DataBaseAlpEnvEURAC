@@ -17,8 +17,7 @@
 
 dB_getSWC <- function(path2files, header.file,
                    station, station_nr,
-                   calibration=TRUE, 
-                   calibration_file="H:/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/calibration.csv",
+                   calibrate=FALSE, 
                    aggregation, 
                    minVALUE=0.05, maxVALUE=.5,
                    clear_raw_data=FALSE,
@@ -105,11 +104,12 @@ dB_getSWC <- function(path2files, header.file,
   }
   
   # INCLUDE CALIBRATION
-  if (calibration)
+  if (calibrate)
   {
     print("include calibration")
     
-    cal <- read.csv(calibration_file,header=TRUE)
+    data(calibration)
+    cal <- calibration
     
     # 2cm (for station I + P)
     if (station=="I" | station=="P") {
