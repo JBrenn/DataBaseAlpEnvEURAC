@@ -22,17 +22,20 @@ dB_readZRX2station(files, write_csv, output_path, do.hourly, do.quality, chron)
   path to which .csv files are written
   }
   \item{do.hourly}{
-  boolean, TRUE: hourly aggregation of data, variable specific
+  boolean, TRUE: hourly aggregation of data, variable specific; default FALSE
   }
   \item{do.quality}{
-  boolean, TRUE: general quality check (min - max)
+  boolean, TRUE: general quality check (min - max); default FALSE
   }
   \item{chron}{
-  boolean, TRUE: chron object for datetime representation, FALSE: POSIX object for datetime representation
+  boolean, TRUE: chron object for datetime representation, default FALSE: POSIX object for datetime representation
   }
+  \item{multivar}{
+  boolean, default FALSE: single variable in .rzx file; TRUE: multiple variables in .rzx file
+  } 
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+For multivar = TRUE input is a single .rzx file, for multifar = FALSE input of more than one .rzx file is provided.
 }
 \value{
 %%  ~Describe the value returned

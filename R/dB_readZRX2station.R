@@ -22,7 +22,7 @@
 # output .csv files containing available variables for each station
 # list containing zoo objects for each station
 
-dB_readZRX2station <- function(files, write_csv, output_path, do.hourly, do.quality, chron)
+dB_readZRX2station <- function(files, write_csv, output_path, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, multivar=FALSE)
   
   {
     # source function readZRX
@@ -33,31 +33,76 @@ dB_readZRX2station <- function(files, write_csv, output_path, do.hourly, do.qual
     out_data <- list()
     out_metadata <- list()
     
-    # read data via loop over files
-    for (i in files)
-    {
-      out  <- dB_readZRX(i, do.hourly = do.hourly, do.quality = do.quality, chron = FALSE)
-      out_data[[substr(i,1,nchar(i)-4)]] <- out[[1]]
-      out_metadata[[substr(i,1,nchar(i)-4)]] <- out[[2]]
-      stnames <- c(stnames, names(out_data[[substr(i,1,nchar(i)-4)]]))
-    }
-  
-    # get unique station IDs
-    stations <- unique(stnames)
-    
-    # preperation for dummy with minimal time frame 
-    t <- lapply(X = out_data, FUN = function(x){
-      lapply(X = x, FUN = function(x){
-        diff(range(time(x)))
-      })
-    })
-    t <- lapply(t, unlist)
-    min1 <- lapply(t, which.min)
-    min2 <- which.min(unlist(lapply(t, which.min)))
-    
     # dummy for station data
     station_data <- list()
     
+    # read data via loop over files
+    for (i in files)
+    {
+      if (multivar) {
+        out <- dB_readZRX(i, do.hourly = do.hourly, do.quality = do.quality, chron = chron, multivar = multivar)
+        for (st in unique(out$meta[,"st_id"]))
+        {
+          out_data[[paste("st",st,sep="")]] <- out$data[out$meta[,1]%in%st]
+          out_metadata[[paste("st",st,sep="")]] <- out$meta[out$meta[,1]%in%st,]
+          stnames <- c(stnames, paste("st",st,sep=""))
+          
+          # merge variables in one zoo object
+          
+          if (length(out_data[[paste("st",st,sep="")]]) > 1) {
+            dummy <- out_data[[paste("st",st,sep="")]][[1]]
+            
+            for (t in 2:length( out_data[[paste("st",st,sep="")]] ))
+              dummy <- cbind(dummy, out_data[[paste("st",st,sep="")]][[t]])
+            
+          } else {
+            dummy <- out_data[[paste("st",st,sep="")]][[1]]
+          }
+          names(dummy) <- substr(names(out_data[[paste("st",st,sep="")]]), 8,nchar(names(out_data[[paste("st",st,sep="")]])))
+          
+          # write.csv
+          # write .csv file containing station data
+          if (write_csv)
+          {
+            #STinMetadata <- which(substr(i,3,nchar(i))==metadata[,"st_id"])
+            if (do.hourly==T){
+              output_filename <- paste("st", st, "_60", sep="")
+            } else {
+              output_filename <- paste("st", st, "_", unique(out_metadata[[paste("st",st,sep="")]][,"time_agg"]), sep="")
+            }
+            write.zoo( x = dummy, file = file.path(output_path, paste(output_filename,".csv",sep="")), 
+                       row.names=F, col.names=T, sep=",", quote=F, index.name="date")
+          }
+          
+          station_data[[paste("st",st,sep="")]] <- dummy
+        }
+        
+      } else {
+        out <- dB_readZRX(i, do.hourly = do.hourly, do.quality = do.quality, chron = chron, multivar = multivar)
+        out_data[[substr(i,1,nchar(i)-4)]] <- out[[1]]
+        out_metadata[[substr(i,1,nchar(i)-4)]] <- out[[2]]
+        stnames <- c(stnames, names(out_data[[substr(i,1,nchar(i)-4)]]))
+      }
+      
+    }
+  
+    if (!multivar) {
+      
+      # get unique station IDs
+      stations <- unique(stnames)
+      
+      # preperation for dummy with minimal time frame 
+      t <- lapply(X = out_data, FUN = function(x){
+        lapply(X = x, FUN = function(x){
+          diff(range(time(x)))
+        })
+      })
+      t <- lapply(t, unlist)
+      min1 <- lapply(t, which.min)
+      min2 <- which.min(unlist(lapply(t, which.min)))
+      
+      
+      
       # loop over unique station vector
       for (i in stations)
       {
@@ -76,7 +121,7 @@ dB_readZRX2station <- function(files, write_csv, output_path, do.hourly, do.qual
           
           if ( any(names(data)==i) ){
             st_data <- data[[i]]
-           
+            
             dummy <- merge(dummy, st_data)
             name_spec <- c(name_spec, TRUE)
           } else {
@@ -104,7 +149,8 @@ dB_readZRX2station <- function(files, write_csv, output_path, do.hourly, do.qual
         # save data in station data list
         station_data[[i]] <- dummy
       }
-      
+    }
+    
     # return function output
     return(station_data)
 

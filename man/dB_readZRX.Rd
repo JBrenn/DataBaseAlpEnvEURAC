@@ -7,7 +7,7 @@ read ZRX data file (WISKI, batch download)
 \description{
 read ZRX data file (Province Bozen/Bolzano, WISKI, batch download); general quality check | min and max, variable dependent; hourly aggregation (mean - sum) possible}
 \usage{
-dB_readZRX(file, do.hourly=FALSE, do.quality=FALSE, chron=FALSE)
+dB_readZRX(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, multivar=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -15,14 +15,17 @@ dB_readZRX(file, do.hourly=FALSE, do.quality=FALSE, chron=FALSE)
   ZRX file name (absolute path)
   }
   \item{do.hourly}{
-  boolean, TRUE: hourly aggregation of data, variable specific
+  boolean, TRUE: hourly aggregation of data, variable specific; default FALSE
   }
   \item{do.quality}{
-  boolean, TRUE: general quality check (min - max)
+  boolean, TRUE: general quality check (min - max);  default FALSE
   }
   \item{chron}{
-  boolean, TRUE: chron object for datetime representation, FALSE: POSIX object for datetime representation
+  boolean, default TRUE: chron object for datetime representation, FALSE: POSIX object for datetime representation
   }
+  \item{multivar}{
+  boolean, default FALSE: single variale in .rzx file; TRUE: multiple variables in .rzx file
+  } 
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~

@@ -13,7 +13,7 @@
 # do.hourly   logical, if TRUE data gets hourly aggregated
 # do.quality  logical, if FALSE general quality check is performed (min - max)
 
-dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=FALSE)
+dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, multivar=FALSE)
 {
   # load zoo library
   # require("zoo")
@@ -31,8 +31,8 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=FALSE)
   for (i in 1:(length(start_st)-1))
   {
     # get data for specific station
-    data <- dummy[ start_st[i]:(start_st[i+1]-1) ]  
-    
+    data <- encodeString(dummy[ start_st[i]:(start_st[i+1]-1) ])
+ 
     #-----
     # get METADATA
     header <- data[ c(grep("#", data)) ]
@@ -99,7 +99,6 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=FALSE)
         date <- as.POSIXct( strptime(x = datetime, format = "%Y-%m-%d %H:%M:%S") )
       }
     
-      
       # create zoo object
       data_zoo <- zoo(x = as.numeric(data_ts[,2][!is.na(date)]), order.by = date[!is.na(date)])
       
@@ -146,7 +145,7 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=FALSE)
         # Jimenez et al. (2010) - random, systematic, rough errors
         #                       - Manipulation errors - Limits consistency (0-30m/s, 0-360°)
         #                       - Temporal consistency (ABNORMALLY LOW VARIATIONS & ABNORMALLY HIGH VARIATIONS)
-        # Chávez-Arroyo and Probst (2013)
+        # Chvez-Arroyo and Probst (2013)
       
       # wind velocity WG
       if (length(grep("WG", var_name))==1) {
@@ -193,7 +192,12 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=FALSE)
     }
    
     # save data in output list
-    data_list[[paste("st",st_id,sep="")]] <- data_zooreg
+    if (multivar) {
+      data_list[[paste("st",st_id,"_",var_name,sep="")]] <- data_zooreg
+    } else {
+      data_list[[paste("st",var_name,sep="")]] <- data_zooreg
+    }
+    
   }
   
   #return function output
