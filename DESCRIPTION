@@ -11,4 +11,5 @@ Depends: R (>= 3.0.3)
 License: LGPL (>= 2)
 Imports:
     chron,
-    zoo
+    zoo,
+    soilwater

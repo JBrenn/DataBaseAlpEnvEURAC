@@ -3,6 +3,7 @@
 
 import(chron)
 import(zoo)
+import(soilwater)
 
 # Export all names
 exportPattern(".")
