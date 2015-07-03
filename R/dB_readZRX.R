@@ -6,7 +6,7 @@
 # general quality check | min - max variable dependent
 # & hourly aggregation (mean - sum)
 
-# required libraries: zoo
+# required libraries: zoo, chron
 
 # ARGUMENTS
 # file        ZRX file name (absolute path)
@@ -195,7 +195,7 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
     if (multivar) {
       data_list[[paste("st",st_id,"_",var_name,sep="")]] <- data_zooreg
     } else {
-      data_list[[paste("st",var_name,sep="")]] <- data_zooreg
+      data_list[[paste("st",st_id,sep="")]] <- data_zooreg
     }
     
   }
