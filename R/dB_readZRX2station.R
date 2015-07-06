@@ -65,7 +65,7 @@ dB_readZRX2station <- function(files, write_csv, output_path, do.hourly=FALSE, d
           if (write_csv)
           {
             #STinMetadata <- which(substr(i,3,nchar(i))==metadata[,"st_id"])
-            if (do.hourly==T & as.integer(unique(out_metadata[[paste("st",st,sep="")]][,"time_agg"]))<60){
+            if (do.hourly==T & as.integer(unique(out_metadata[[paste("st",st,sep="")]][,"time_agg"])) < 60){file
               output_filename <- paste("st", st, "_60", sep="")
             } else {
               output_filename <- paste("st", st, "_", unique(out_metadata[[paste("st",st,sep="")]][,"time_agg"]), sep="")
@@ -135,7 +135,7 @@ dB_readZRX2station <- function(files, write_csv, output_path, do.hourly=FALSE, d
         if (write_csv)
         {
           #STinMetadata <- which(substr(i,3,nchar(i))==metadata[,"st_id"])
-          if (do.hourly==T & as.integer(unique(out_metadata[[paste("st",st,sep="")]][,"time_agg"])<60)){
+          if (do.hourly==T & as.integer(unique(metadata[,"time_agg"])) < 60){
             output_filename <- paste(i, "60", sep="_")
           } else {
             output_filename <- paste(i, unique(metadata[,"time_agg"]), sep="_")
