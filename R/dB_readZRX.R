@@ -127,17 +127,17 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
     {
       # data quality check
       # relative air humidiy LF
-      if (length(grep("LF", var_name))==1) {
+      if (grepl("LF", var_name)) {
         data_zooreg <- ifelse(data_zooreg > 100, 100, data_zooreg)
         data_zooreg <- ifelse(data_zooreg < 0, 0, data_zooreg)
       }
       # air temperature LT
-      if (length(grep("LT", var_name))==1) {
-        data_zooreg <- ifelse(data_zooreg > 40, NA, data_zooreg)
-        data_zooreg <- ifelse(data_zooreg < -40, NA, data_zooreg)
+      if (grepl("LT", var_name)) {
+        data_zooreg <- ifelse(data_zooreg > 50, NA, data_zooreg)
+        data_zooreg <- ifelse(data_zooreg < -50, NA, data_zooreg)
       }
       # air temperature TD
-      if (length(grep("TD", var_name))==1) {
+      if (grepl("TD", var_name)) {
         data_zooreg <- ifelse(data_zooreg > 25, NA, data_zooreg)
         data_zooreg <- ifelse(data_zooreg < -40, NA, data_zooreg)
       }
@@ -148,18 +148,18 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
         # Chvez-Arroyo and Probst (2013)
       
       # wind velocity WG
-      if (length(grep("WG", var_name))==1) {
+      if (grepl("WG", var_name)) {
         data_zooreg <- ifelse(data_zooreg > 35, NA, data_zooreg)
         data_zooreg <- ifelse(data_zooreg < 0, NA, data_zooreg)
     
       }
       # wind direction WD
-      if (length(grep("WD", var_name))==1) {
+      if (grepl("WD", var_name)) {
         data_zooreg <- ifelse(data_zooreg > 360, NA, data_zooreg)
         data_zooreg <- ifelse(data_zooreg < 0, NA, data_zooreg)
       }
-      # Precipitation N
-      if (length(grep("N", var_name))==1) {
+      # Precipitation NN
+      if (grepl("NN", var_name)) {
         data_zooreg <- ifelse(data_zooreg < 0, NA, data_zooreg)
       }
     }
