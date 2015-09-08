@@ -151,11 +151,17 @@ dB_readZRX2station <- function(files, write_csv, output_path, do.hourly=FALSE, d
     
     if (write_csv) 
     {
-      for (m in names(out_metadata))
-      {
-      filen <- paste("meta_",m,".csv",sep="")
-      write.csv(out_metadata[[m]], file.path(output_path,filen), row.names=F, quote = F)
+      if (length(files)==1) {
+        filen <- paste("meta_",stnames,".csv",sep="")
+        write.csv(out_metadata[[1]], file.path(output_path,filen), row.names=F, quote = F)
+      } else {
+        for (m in names(out_metadata))
+        {
+          filen <- paste("meta_",m,".csv",sep="")
+          write.csv(out_metadata[[m]], file.path(output_path,filen), row.names=F, quote = F)
+        }
       }
+    
     }
     
     # return function output

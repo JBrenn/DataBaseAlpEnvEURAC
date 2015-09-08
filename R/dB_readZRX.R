@@ -106,11 +106,11 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
       if (chron){
         if (time_scale==60) {
           data_zooreg <- zooreg(data = NA, order.by = seq( from = time(data_zoo)[1],to = tail(x = time(data_zoo),n = 1), 
-                                                           by = time("01:00:00") ) )
+                                                           by = times("01:00:00") ) )
                                                            
         } else {
           data_zooreg <- zooreg(data = NA, order.by = seq( from = time(data_zoo)[1],to = tail(x = time(data_zoo),n = 1), 
-                                                           by = time( paste(time_scale,":00:00",sep="") ) ) ) 
+                                                           by = times( paste("00:",time_scale,":00",sep="") ) ) ) 
         }
       } else {
         data_zooreg <- zooreg(data = NA, order.by = seq( from = time(data_zoo)[1],to = tail(x = time(data_zoo),n = 1), 
