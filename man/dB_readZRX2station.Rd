@@ -8,7 +8,8 @@ process ZRX data files (WISKI, batch download) with function \command{readZRX}
 process ZRX data files (Province of Bozen/Bolzano, WISKI, batch download) with function \command{readZRX}: general quality check | min - max variable dependent, hourly aggregation (mean - sum) possible. Return .csv file for each station containing available variables.
 }
 \usage{
-dB_readZRX2station(files, write_csv, output_path, do.hourly, do.quality, chron)
+dB_readZRX2station(files, write_csv=FALSE, output_path, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, 
+                               multivar=FALSE, saveRData=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -32,6 +33,9 @@ dB_readZRX2station(files, write_csv, output_path, do.hourly, do.quality, chron)
   }
   \item{multivar}{
   boolean, default FALSE: single variable in .rzx file; TRUE: multiple variables in .rzx file
+  } 
+  \item{saveRData}{
+  boolean, default FALSE: save .RData file
   } 
 }
 \details{

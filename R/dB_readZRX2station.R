@@ -22,7 +22,8 @@
 # output .csv files containing available variables for each station
 # list containing zoo objects for each station
 
-dB_readZRX2station <- function(files, write_csv, output_path, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, multivar=FALSE)
+dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, 
+                               multivar=FALSE, saveRData=FALSE)
   
   {
     # source function readZRX
@@ -162,6 +163,11 @@ dB_readZRX2station <- function(files, write_csv, output_path, do.hourly=FALSE, d
         }
       }
     
+    }
+    
+    if (saveRData)
+    {
+      save(list = "station_data", file = "data.RData")
     }
     
     # return function output
