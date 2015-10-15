@@ -55,7 +55,7 @@ dB_getGEOtop <- function(path2files, header.file,
   {
     # sequence from start to end data by 15min
     g <- zoo(x = NA, seq(head(index(data),1),tail(index(data),1),by=1/24/4))
-    data <- merge(data,g)[,1:length(cols)]
+    data <- merge(data,g)[,1:dim(data)[2]]
     #names(data) <- names(data)[-length(names(data))]
   }
 
