@@ -53,8 +53,8 @@ dB_getGEOtop <- function(path2files, header.file,
   # e.g. for M1 | 2013-05-27 to 2013-10-08
   if (mkreg)
   {
-    require("chron")
-    g <- zoo(x = NA, seq(head(index(data),1),tail(index(data),1),by="15 min"))
+    # sequence from start to end data by 15min
+    g <- zoo(x = NA, seq(head(index(data),1),tail(index(data),1),by=1/24/4))
     data <- merge(data,g)[,1:length(cols)]
     #names(data) <- names(data)[-length(names(data))]
   }
@@ -95,10 +95,9 @@ dB_getGEOtop <- function(path2files, header.file,
     if (i=="SolarRadiation")
     {
       # MIN
-      coredata(data[,i]) <- ifelse(coredata(data[,i])< 0, 0, coredata(data[,i]))
+      coredata(data[,i]) <- ifelse(coredata(data[,i])< 0, NA, coredata(data[,i]))
       # MAX
-      coredata(data[,i]) <- ifelse(coredata(data[,i])> 1500, max(coredata(data[,i]), rm.na=TRUE),
-                                   coredata(data[,i]))
+      coredata(data[,i]) <- ifelse(coredata(data[,i])> 1500, NA, coredata(data[,i]))
     }
     # WIND SPEED
     if (i=="WindSpeed")
