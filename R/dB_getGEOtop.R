@@ -29,7 +29,7 @@ dB_getGEOtop <- function(path2files, header.file,
                      READvar = c("Rain","WindSpeed","WindDirection","RH","Temp","SolarRadiation"),
                      var2geotop = c("Rain","WindSpeed","WindDirection","RH","Temp","SolarRadiation", "CloudTrans"),
                      GEOtopVAR= c("Iprec", "WindSp", "WindDir", "RelHum", "AirT", "SWglobal", "CloudTrans"),
-                     mkreg=FALSE,
+#                     mkreg=FALSE,
                      aggr_time,
                      cut_date=FALSE,
                      time_window,
@@ -49,14 +49,13 @@ dB_getGEOtop <- function(path2files, header.file,
   
   data <- data[,names(data) %in% READvar]
   
-  # if time series is not strictlly regular: set missing timesteps to NA
-  # e.g. for M1 | 2013-05-27 to 2013-10-08
-  if (mkreg)
+  # if time series is not strictly regular: set missing timesteps to NA
+  # e.g. for M1 | 2013-05-27 to 2014-03
+  if (!is.regular(data))
   {
     # sequence from start to end data by 15min
     g <- zoo(x = NA, seq(head(index(data),1),tail(index(data),1),by=1/24/4))
     data <- merge(data,g)[,1:dim(data)[2]]
-    #names(data) <- names(data)[-length(names(data))]
   }
 
   # DO data quality

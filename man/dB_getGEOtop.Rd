@@ -8,7 +8,15 @@ Get meteorological data from micro-meteo station (Mazia/Matsch) in GEOtop format
 Create GEOtop meteo input file from raw micro-meteo station (Mazia/Matsch) for a specific time frame
 }
 \usage{
-dB_getGEOtop(path2files, header.file, station, READvar = c("Rain","WindSpeed","WindDirection","RH","Temp","SolarRadiation"), var2geotop = c("Rain","WindSpeed","WindDirection","RH","Temp","SolarRadiation", "CloudTrans"), GEOtopVAR= c("Iprec", "WindSp", "WindDir", "RelHum", "AirT", "SWglobal", "CloudTrans"), mkreg=FALSE,  aggr_time, cut_date=FALSE, time_window, file.name=NULL, skipwinter=FALSE, TempThresh=-2, tz="Etc/GMT-1")
+dB_getGEOtop(path2files, header.file, station, 
+             READvar = c("Rain","WindSpeed","WindDirection","RH","Temp",
+                         "SolarRadiation"), 
+             var2geotop = c("Rain","WindSpeed","WindDirection","RH","Temp",
+                            "SolarRadiation", "CloudTrans"), 
+             GEOtopVAR= c("Iprec", "WindSp", "WindDir", "RelHum", "AirT",
+                          "SWglobal", "CloudTrans"), 
+             aggr_time, cut_date=FALSE, time_window, file.name=NULL, skipwinter=FALSE,
+             TempThresh=-2, tz="Etc/GMT-1")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -30,9 +38,9 @@ dB_getGEOtop(path2files, header.file, station, READvar = c("Rain","WindSpeed","W
   \item{GEOtopVAR}{
   variables included in GEOtop input file (GEOtop names) 
   }
-  \item{mkreg}{
-  make time series data regular
-  }
+%  \item{mkreg}{
+%  make time series data regular
+%  }
   \item{aggr_time}{
   character, time aggregation applied. "n" no aggregation of raw data,"h": hourly, "d": daily
   }
