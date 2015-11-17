@@ -80,7 +80,7 @@ dB_readStationData <- function(path, header.file, station)
       }
     }
  
-    data <- rbind(data,dummy)
+    data <- rbind(data,dummy[,1:length(header)])
     
     # extract date and time
     
