@@ -135,7 +135,7 @@ dB_readStationData <- function(path, header.file, station)
   datetime <- datetime[-1]
   data <- data[-1,-c(1:date_col)]
 
-  # create zoo object
+  # create regular zoo object
   zoo.data <- zoo(x=data, order.by=datetime)
   names(zoo.data) <- header[-c(1:date_col)]
   
