@@ -165,6 +165,18 @@ dB_getSWC <- function(path2files, header.file,
   
   data <- zoo(core, time(data))
   
+  # harmonise colnames of data SWC_sensor_depth, e.g. SWC_LS_z5
+  if (station == "I" | station == "P")
+  {
+    newnames <- c()
+    for (i in 1:length(names(data)))
+    {
+      split <- strsplit(names(data)[i], "_")
+      newnames[i] <- paste(split[[1]][1], split[[1]][3], split[[1]][2], sep = "_")
+    }
+  names(data) <- newnames    
+  }
+  
   # daily aggregation
   if (aggregation == "d") data <- aggregate(x=data,by=as.Date(time(data)),FUN=mean, na.rm=T)
   if (aggregation == "h") 
