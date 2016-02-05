@@ -5,8 +5,8 @@
 # header.file path and name headerfile
 # station    
 #e.g.
-#path <- "H:/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/B/B1/"
-#header.file <- "H:/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/B/header_B1.txt"
+#path <- "/run/user/1000/gvfs/smb-share:server=abz02fst.eurac.edu,share=alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/B/B1/"
+#header.file <- "/run/user/1000/gvfs/smb-share:server=abz02fst.eurac.edu,share=alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/B/header_B1.txt"
 
 dB_readStationData <- function(path, header.file, station)
 {
@@ -49,35 +49,25 @@ dB_readStationData <- function(path, header.file, station)
   for (i in files)
   {
     # whole data frame
-    if (i=="B3_2000_YEAR_2014.csv" | i=="B3_2000_YEAR_2015.csv") {
-      dummy <- read.csv(file.path(path,i), skip=skip, header=FALSE, dec=".",
-                         na.strings=c("NaN","7777","-888.88","-999", "NAN"))
-      dummy <- dummy[,1:dim(data)[2]]
-    } else {
-      if (i=="B3_2000_YEAR_2010.csv" | i=="B3_2000_YEAR_2012.csv") {
+    if (i=="B3_2000_YEAR_2014.csv" | i=="B3_2000_YEAR_2015.csv" | i=="B1_1000_YEAR_2016.csv") {
+        dummy <- read.csv(file.path(path,i), skip=skip, header=FALSE, dec=".",
+                           na.strings=c("NaN","7777","-888.88","-999", "NAN"))
+        dummy <- dummy[,1:dim(data)[2]]
+    } else if (i=="B3_2000_YEAR_2010.csv" | i=="B3_2000_YEAR_2012.csv") {
         dummy <- read.csv2(file.path(path,i), skip=skip, header=FALSE, 
                            na.strings=c("NaN","7777","-888.88","-999", "NAN"))
-        
-      } else {
-        if (i=="I1_YEAR_2014.csv") {
-          dummy <- read.csv(file.path(path,i), skip=skip, header=FALSE, 
+    } else if (i=="I1_YEAR_2014.csv") {
+        dummy <- read.csv(file.path(path,i), skip=skip, header=FALSE, 
+                          na.strings=c("NaN","7777","-888.88", "-999", "NAN"))
+        dummy <- dummy[,-1]
+        names(dummy) <- paste("V", 1:length(dummy), sep="")
+    } else if (i=="M1_total_2014-2015.csv" | i=="P3_YEAR_2015.csv") {
+        dummy <- read.csv(file.path(path,i), skip=skip, header=FALSE, 
                             na.strings=c("NaN","7777","-888.88", "-999", "NAN"))
-          dummy <- dummy[,-1]
-          names(dummy) <- paste("V", 1:length(dummy), sep="")
-        } else {
-          if (i=="M1_total_2014-2015.csv" | i=="P3_YEAR_2015.csv") {
-            dummy <- read.csv(file.path(path,i), skip=skip, header=FALSE, 
-                              na.strings=c("NaN","7777","-888.88", "-999", "NAN"))
-            dummy <- dummy[,1:length(header)]
-          } else {
-            dummy <- read.csv(file.path(path,i), skip=skip, header=FALSE, 
-                              na.strings=c("NaN","7777","-888.88", "-999", "NAN"))
-          }  
-          
-       
-        }
-        
-      }
+        dummy <- dummy[,1:length(header)]
+    } else {
+        dummy <- read.csv(file.path(path,i), skip=skip, header=FALSE, 
+                          na.strings=c("NaN","7777","-888.88", "-999", "NAN"))
     }
  
     data <- rbind(data,dummy)
