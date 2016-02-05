@@ -50,7 +50,8 @@ dB_readStationData <- function(path, header.file, station)
   {
     # whole data frame
     if (i=="B3_2000_YEAR_2014.csv" | i=="B3_2000_YEAR_2015.csv" | 
-        i=="B1_1000_YEAR_2016.csv" | i=="B2_1500_YEAR_2016.csv" | i=="B3_2000_YEAR_2016.csv" ) {
+        i=="B1_1000_YEAR_2016.csv" | i=="B2_1500_YEAR_2016.csv" | i=="B3_2000_YEAR_2016.csv" |
+        i=="P3_YEAR_2016.csv") {
         dummy <- read.csv(file.path(path,i), skip=skip, header=FALSE, dec=".",
                            na.strings=c("NaN","7777","-888.88","-999", "NAN"))
         dummy <- dummy[,1:dim(data)[2]]
