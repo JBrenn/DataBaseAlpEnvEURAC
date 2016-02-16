@@ -22,6 +22,7 @@ dB_readStationData <- function(path, header.file, station)
   
 # get header
   header <- as.character(read.table(header.file, header=FALSE)[,1])
+  header_org <- header
 
   station_gen <- substr(station,1,nchar(station)-1)
 
@@ -81,6 +82,12 @@ dB_readStationData <- function(path, header.file, station)
     } else {
         dummy <- read.csv(file.path(path,i), skip=skip, header=FALSE, 
                           na.strings=c("NaN","7777","-888.88", "-999", "NAN"))
+    } 
+    
+    if (exists("header.file_")) {
+      # reorder data
+      names(dummy) <- header
+      dummy <- dummy[header_org]
     }
  
     data <- rbind(data,dummy)
