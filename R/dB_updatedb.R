@@ -46,7 +46,7 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P2"), variables = "METEO",
     {
       # make regular
       g <- zoo(x = NA, seq(head(index(data),1),tail(index(data),1),by=times("00:15:00")))
-      data <- merge(data,g)[,1:length(cols)]
+      data <- merge(g,data)[,-1]
     }
     
     df <- data.frame(datetime=index(data),coredata(data))
