@@ -12,4 +12,5 @@ License: LGPL (>= 2)
 Imports:
     chron,
     zoo,
-    soilwater
+    soilwater,
+    RSQLite
