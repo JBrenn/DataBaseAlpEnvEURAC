@@ -6,11 +6,13 @@
 
 db_updatedb <- function(stations = c("B1","B2","B3","P2"), variables = "METEO",
                          path2data = "/run/user/1000/gvfs/smb-share:server=abz02fst.eurac.edu,share=alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/", 
-                         inCloud = "/home/jbr/ownCloud/data/")
+                         inCloud = "/home/jbr/ownCloud/data/",
+                        return_data = FALSE)
 {
   # connect to db in data folder of project
   db = dbConnect(SQLite(), dbname=file.path(inCloud,paste(variables,".sqlite",sep="")))
   
+  out <- list()
   
   for (i in stations)
   {
@@ -37,6 +39,16 @@ db_updatedb <- function(stations = c("B1","B2","B3","P2"), variables = "METEO",
       data <- dB_getMETEO(path2files, header.file, station = stationchr, station_nr = stationnr)
     }
     
+    # remove data with NA date
+    data <- data[!is.na(index(data))]
+    
+    if(!is.regular(data))
+    {
+      # make regular
+      g <- zoo(x = NA, seq(head(index(data),1),tail(index(data),1),by="15 min"))
+      data <- merge(data,g)[,1:length(cols)]
+    }
+    
     df <- data.frame(datetime=index(data),coredata(data))
     
     # update litesql
@@ -44,6 +56,7 @@ db_updatedb <- function(stations = c("B1","B2","B3","P2"), variables = "METEO",
                  value=df, row.names = NA, overwrite = TRUE, append = FALSE,
                  field.types = NULL)
     
+    out[[i]] <- data
   }
   
   # list tables in db
@@ -62,5 +75,5 @@ db_updatedb <- function(stations = c("B1","B2","B3","P2"), variables = "METEO",
     }
   }
  
-  
+  if (return_data) return(out)
 }
