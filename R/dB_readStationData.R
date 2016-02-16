@@ -17,11 +17,11 @@ dB_readStationData <- function(path, header.file, station)
 # supress chron year abbreviation  
   options(chron.year.abb = FALSE)
   
-# get header
-  header <- as.character(read.table(header.file, header=FALSE)[,1])
-  
 # get file names  
   files <- dir(path)
+  
+# get header
+  header <- as.character(read.table(header.file, header=FALSE)[,1])
 
   station_gen <- substr(station,1,nchar(station)-1)
 
@@ -48,6 +48,13 @@ dB_readStationData <- function(path, header.file, station)
 
   for (i in files)
   {
+    # change header where needed
+    # M2 
+    if (i== "M2 Station total_2014_07_07_TO_2014_11_14.csv"| i=="M2 Station total_2014_11_14_TO_2015_07_09.csv") {
+      header.file_ <- paste(substr(header.file, 1, nchar(header.file)-13), "header_M2_2015.txt", sep="")
+      header <- as.character(read.table(header.file_, header=FALSE)[,1])
+    }
+    
     # whole data frame
     if (i=="P3_YEAR_2016.csv") {
       dummy <- read.csv(file.path(path,i), skip=skip, header=FALSE, 
