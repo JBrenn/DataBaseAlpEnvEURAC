@@ -1,10 +1,4 @@
 # main for one Station (example B2)
-
-# ARGUMENTS
-# path2files    path to meteo files
-# header.file   header file
-# station       station specification, e.g. "B2"
-# READvar       variables to select in function getMETEO() 
 # var2geotop    variables included in GEOtop input file (GEOtop names)
 # GEOtopVAR     variables included in GEOtop input file (previous names)
 # pdf.name      name of pdf file, plot meteo variables time series

@@ -12,7 +12,7 @@
 #Date,JDfrom0,Iprec,WindSp,WindDir,RelHum,AirT,Swglobal
 #time(data),julian(x,origin=as.POSIXct("1960-01-01 00:00:00")),Rain,WindSpeed,WindDirection,RH,Temp,SolarRadiation
 
-dB_getMETEO <- function(path2files, header.file, station, 
+dB_getMETEO <- function(path2files, header.file, station, station_nr,
                         cols = c("Rain","WindSpeed","WindDirection","RH","Temp","SolarRadiation"), 
                         plot=FALSE, pdf.name, mkreg=FALSE)
 {
@@ -20,6 +20,7 @@ dB_getMETEO <- function(path2files, header.file, station,
   #source("H:/Projekte/HiResAlp/06_Workspace/BrJ/04_R_data_analyses/data_base/FUN_readStationData2zoo.R")
   
   #require("zoo")
+  station <- paste(station,station_nr,sep="")
   
   data <- dB_readStationData(path = path2files, header.file = header.file, station=station)
   
