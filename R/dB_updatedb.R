@@ -4,7 +4,7 @@
 # library(chron)
 
 
-db_updatedb <- function(stations = c("B1","B2","B3","P2"), variables = "METEO",
+dB_updatedb <- function(stations = c("B1","B2","B3","P2"), variables = "METEO",
                          path2data = "/run/user/1000/gvfs/smb-share:server=abz02fst.eurac.edu,share=alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/", 
                          inCloud = "/home/jbr/ownCloud/data/",
                         return_data = FALSE)
