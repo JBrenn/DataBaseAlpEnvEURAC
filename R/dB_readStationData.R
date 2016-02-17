@@ -21,11 +21,14 @@ dB_readStationData <- function(path, header.file, station)
   files <- dir(path)
   
 # get header
-  header <- as.character(read.table(header.file, header=FALSE)[,1])
+  header <- as.character(read.table(header.file, header=FALSE, sep=",")[,1])
   header_org <- header
 
   station_gen <- substr(station,1,nchar(station)-1)
 
+  if (station_gen=="SF") {
+    skip <- 1; date_col=2; tz="Etc/GMT+1"
+  }
   if (station_gen=="B") {
     skip <- 4; date_col=1; tz="Etc/GMT-2"
   }
