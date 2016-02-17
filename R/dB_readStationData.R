@@ -88,8 +88,10 @@ dB_readStationData <- function(path, header.file, station)
       # reorder data
       names(dummy) <- header
       dummy <- dummy[header_org]
+      names(dummy) <- names(data)
+      rm(header.file_)
     }
- 
+    
     data <- rbind(data,dummy)
     
     # extract date and time
