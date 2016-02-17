@@ -7,7 +7,7 @@
 dB_updatedb <- function(stations = c("B1","B2","B3","P2","M1","M2","M3","M4","M5","M6","M7"), 
                         variables = "METEO",
                          path2data = "/run/user/1000/gvfs/smb-share:server=abz02fst.eurac.edu,share=alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/", 
-                         inCloud = "/home/jbr/ownCloud/data/",
+                         inCloud = "/home/jbr/ownCloud/data/SQL/",
                         return_data = FALSE)
 {
   # connect to db in data folder of project
@@ -34,6 +34,14 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P2","M1","M2","M3","M4","M5
       
       if(any(names(data)=="core5")) names(data)[which(names(data)=="core5")] <- "SWC_A_z5"
       if(any(names(data)=="core20")) names(data)[which(names(data)=="core20")] <- "SWC_A_z20"
+    }
+    
+    if (variables == "TSoil") {
+      data <- dB_getSoilTemp(path2files, header.file, station = stationchr, station_nr = stationnr,
+                        minVALUE = -50, maxVALUE = 50, aggregation = "n")
+      
+      if(any(names(data)=="core5")) names(data)[which(names(data)=="core5")] <- "TS_A_z5"
+      if(any(names(data)=="core20")) names(data)[which(names(data)=="core20")] <- "TS_A_z20"
     }
 
     if (variables == "METEO") {
