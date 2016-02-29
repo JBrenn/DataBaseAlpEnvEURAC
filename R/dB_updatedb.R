@@ -28,6 +28,10 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P2","M1","M2","M3","M4","M5
     path2files = file.path(path2data,stationchr,i)
     header.file = file.path(path2data,stationchr,paste("header_",i,".txt",sep=""))
     
+    if (variables == "ALL") {
+      data <- dB_readStationData(path2files, header.file, station = i)
+    }
+    
     if (variables == "SWC") {
       data <- dB_getSWC(path2files, header.file, station = stationchr, station_nr = stationnr, calibrate = F, 
                         minVALUE = 0, maxVALUE = 1, aggregation = "n")
