@@ -35,7 +35,7 @@ dB_readStationData <- function(path, header.file, station)
   if (station_gen=="P"| station_gen=="I") {
     skip <- 4; date_col=1; tz="Etc/GMT-1"
   }
-  if (station_gen=="M" | station_gen=="S") {
+  if (station_gen=="M" | station_gen=="S" | station_gen=="XS") {
     skip <- 1; date_col=2; tz="Etc/GMT+1"
   }
   if (station=="S2") {
