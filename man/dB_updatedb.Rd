@@ -16,7 +16,7 @@ CAL_updatedb(stations, path2data, inCloud)
 character vector, station to update, e.g. c("B1", "B2", "B3")
 }
   \item{variables}{
-character, which variables to read, e.g "METEO" for meteorological data, "SMC" for soil moisture, "TSoil" for soil temperature
+character, which variables to read, e.g "ALL" for unqueried data set, "METEO" for meteorological data, "SMC" for soil moisture, "TSoil" for soil temperature
 }
   \item{inCloud}{
 character, path where database is stored, if NULL database will be stored in package directory of \emph{SMCcalibration} where it is needed for plugging in the calibration tool, default: ownCloud directory data, download link.
