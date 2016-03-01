@@ -13,7 +13,7 @@ CAL_updatedb(stations, path2data, inCloud)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{stations}{
-character vector, station to update, e.g. c("B1", "B2", "B3")
+character vector, station to update, e.g. c("B1", "B2", "B3"), defualt: c("B1","B2","B3","P1","P2","P3","I1","I3","M1","M2","M3","M4","M5","M6","M7","S2", "S4", "S5", "XS1", "XS6", "SF1", "SF2", "SF3", "SF4", "SF5")
 }
   \item{variables}{
 character, which variables to read, e.g "ALL" for unqueried data set, "METEO" for meteorological data, "SMC" for soil moisture, "TSoil" for soil temperature
