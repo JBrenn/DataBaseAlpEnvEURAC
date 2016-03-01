@@ -6,7 +6,7 @@
 
 dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1","M2","M3","M4","M5","M6","M7",
                                      "S2", "S4", "S5", "XS1", "XS6", "SF1", "SF2", "SF3", "SF4", "SF5"), 
-                        variables = "ALL",
+                        variables = "TOTAL",
                         path2data = "/run/user/1000/gvfs/smb-share:server=abz02fst.eurac.edu,share=alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/", 
                         inCloud = "/home/jbr/ownCloud/data/SQL/",
                         write_csv = TRUE,
@@ -33,7 +33,7 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
       path2files = file.path(path2data,stationchr,i)
       header.file = file.path(path2data,stationchr,paste("header_",i,".txt",sep=""))
       
-      if (j == "ALL") {
+      if (j == "TOTAL") {
         data <- dB_readStationData(path2files, header.file, station = i)
       }
       
@@ -83,7 +83,7 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
       if (write_csv)
       {
         print(paste("save .csv for station", i, sep=" "))
-        write.csv(x = df, file = file.path(inCloud, paste(j, i, ".csv", sep="")), quote = F, row.names = F)
+        write.csv(x = df, file = file.path(inCloud, paste(j, "_", i, ".csv", sep="")), quote = F, row.names = F)
       }
       
       
