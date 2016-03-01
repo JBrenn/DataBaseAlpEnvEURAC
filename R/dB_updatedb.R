@@ -83,7 +83,7 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
       if (write_csv)
       {
         print(paste("save .csv for station", i, sep=" "))
-        write.csv(x = df, file = file.path(inCloud, paste(variable, i, ".csv", sep="")), quote = F, row.names = F)
+        write.csv(x = df, file = file.path(inCloud, paste(j, i, ".csv", sep="")), quote = F, row.names = F)
       }
       
       
