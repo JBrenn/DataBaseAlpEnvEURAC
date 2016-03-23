@@ -151,6 +151,11 @@ dB_readStationData <- function(path, header.file, station)
   
   datetime <- datetime[-1]
   data <- data[-1,-c(1:date_col)]
+  
+  # remove datetime NAs
+  nas <- which(is.na(datetime))
+  datetime <- datetime[-nas]
+  data <- data[-nas,]
 
   # create regular zoo object
   zoo.data <- zoo(x=data, order.by=datetime)
