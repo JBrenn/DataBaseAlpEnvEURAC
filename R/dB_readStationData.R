@@ -84,6 +84,10 @@ dB_readStationData <- function(path, header.file, station)
         dummy <- read.csv(file.path(path,i), skip=skip, header=FALSE, 
                             na.strings = nas)
         dummy <- dummy[,1:length(header)]
+    } else if (i=="M5_total_2015.csv") {
+      dummy <- read.csv(file.path(path,i), skip=skip, header=FALSE, 
+                        na.strings = nas)
+      dummy$V12 <- NA; dummy$V13 <- NA
     } else {
         dummy <- read.csv(file.path(path,i), skip=skip, header=FALSE, 
                           na.strings = nas)
