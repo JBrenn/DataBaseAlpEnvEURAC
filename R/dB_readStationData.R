@@ -167,7 +167,7 @@ dB_readStationData <- function(path, header.file, station)
 
   # create regular zoo object
   zoo.data <- zoo(x=data, order.by=datetime)
-  names(zoo.data) <- header[-c(1:date_col)]
+  names(zoo.data) <- header_org[-c(1:date_col)]
   
   return(zoo.data)
 }
