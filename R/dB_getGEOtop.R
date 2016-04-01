@@ -63,6 +63,9 @@ dB_getGEOtop <- function(path2files, header.file,
       # MIN <0
       coredata(data[,i]) <- ifelse(coredata(data[,i])<0, 0, coredata(data[,i]))
       
+      # MAX >100
+      coredata(data[,i]) <- ifelse(coredata(data[,i])>100, NA, coredata(data[,i]))
+      
       # improve precipitation quality (see ESOLIP - E.Mayr)
     }
     
