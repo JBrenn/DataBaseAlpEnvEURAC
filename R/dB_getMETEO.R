@@ -13,7 +13,8 @@
 #time(data),julian(x,origin=as.POSIXct("1960-01-01 00:00:00")),Rain,WindSpeed,WindDirection,RH,Temp,SolarRadiation
 
 dB_getMETEO <- function(path2files, header.file, station, station_nr,
-                        cols = c("Rain","WindSpeed","WindDirection","RH","Temp","SolarRadiation"), 
+                        cols = c("Tip_Precip_Int","Wind_Speed","Wind_Dir","RH","T_Air","SR_Sw"), 
+                        #cols = c("Rain","WindSpeed","WindDirection","RH","Temp","SolarRadiation"), 
                         plot=FALSE, pdf.name, mkreg=FALSE)
 {
   # source functions

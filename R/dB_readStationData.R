@@ -5,8 +5,8 @@
 # header.file path and name headerfile
 # station    
 #e.g.
-# path <- "/run/user/1000/gvfs/smb-share:server=abz02fst.eurac.edu,share=alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/P/P3/"
-# header.file <- "/run/user/1000/gvfs/smb-share:server=abz02fst.eurac.edu,share=alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/P/header_P3.txt"
+# path <- "/mnt/alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/M/M1/"
+# header.file <- "/mnt/alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/M/header_M1.txt"
 
 dB_readStationData <- function(path, header.file, station)
 {
@@ -35,8 +35,15 @@ dB_readStationData <- function(path, header.file, station)
   if (station_gen=="P"| station_gen=="I") {
     skip <- 4; date_col=1; tz="Etc/GMT-1"
   }
-  if (station_gen=="M" | station_gen=="S" | station_gen=="XS") {
+  if (station_gen=="M" | station_gen=="S") {
     skip <- 1; date_col=2; tz="Etc/GMT+1"
+    header_final <- paste(substr(header.file, 1, nchar(header.file)-13), "header_final.txt", sep="")
+    header_final <- as.character(read.table(header_final, header=FALSE)[,1])
+  }
+  if (station_gen=="XS") {
+    skip <- 1; date_col=2; tz="Etc/GMT+1"
+    header_final <- paste(substr(header.file, 1, nchar(header.file)-14), "header_final.txt", sep="")
+    header_final <- as.character(read.table(header_final, header=FALSE)[,1])
   }
   if (station=="S2") {
     skip <- 1; date_col=2; tz="Etc/GMT+2"
@@ -164,10 +171,35 @@ dB_readStationData <- function(path, header.file, station)
     datetime <- datetime[-nas]
     data <- data[-nas,]
   }
-
+  
+  # name data with original header names
+  names(data) <- header_org[-c(1:date_col)]
+  
+  if (exists("header_final")) {
+    # add NA cols
+    for (i in header_final) {
+      if (i == "RECORD") {
+        data$RECORD <- 1:(dim(data)[1])
+      } else if (i == "TIMESTAMP") {
+        data$TIMESTAMP <- as.numeric(datetime)
+      } else if (! i %in% names(data)) {
+        data[,as.character(i)] <- NA
+      }
+    }
+      
+    # reorder data
+    data <- data[header_final]
+    
+    # remove NA cols
+    for (i in header_final) {
+      if (all(is.na(data[,as.character(i)]))) {
+        data <- data[,-which(i == names(data))]
+      } 
+    }
+  }
+  
   # create regular zoo object
   zoo.data <- zoo(x=data, order.by=datetime)
-  names(zoo.data) <- header_org[-c(1:date_col)]
   
   return(zoo.data)
 }

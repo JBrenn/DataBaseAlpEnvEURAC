@@ -7,7 +7,7 @@
 dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1","M2","M3","M4","M5","M6","M7",
                                      "S2", "S4", "S5", "XS1", "XS6", "SF1", "SF2", "SF3", "SF4", "SF5"), 
                         variables = "TOTAL",
-                        path2data = "/run/user/1000/gvfs/smb-share:server=abz02fst.eurac.edu,share=alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/", 
+                        path2data = "/mnt/alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/", 
                         inCloud = "/home/jbr/ownCloud/data/SQL/",
                         write_csv = TRUE,
                         return_data = FALSE)
@@ -72,7 +72,7 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
       
       time  <- substr(index(data),13,20)
       
-      df <- data.frame(datetime=as.numeric(index(data)), date=date, time=time ,coredata(data))
+      df <- data.frame(date=date, time=time, coredata(data))
       
       # update litesql
       dbWriteTable(conn=db, name=i,
@@ -85,7 +85,6 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
         print(paste("save .csv for station", i, sep=" "))
         write.csv(x = df, file = file.path(inCloud, paste(j, "_", i, ".csv", sep="")), quote = F, row.names = F)
       }
-      
       
       out[[i]] <- data
     }
@@ -107,8 +106,6 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
       }
     }
   }
-  
-
  
   if (return_data) return(out)
 }
