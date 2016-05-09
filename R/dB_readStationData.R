@@ -31,6 +31,8 @@ dB_readStationData <- function(path, header.file, station)
   }
   if (station_gen=="B") {
     skip <- 4; date_col=1; tz="Etc/GMT-2"
+    header_final <- paste(substr(header.file, 1, nchar(header.file)-13), "header_final.txt", sep="")
+    header_final <- as.character(read.table(header_final, header=FALSE)[,1])
   }
   if (station_gen=="P"| station_gen=="I") {
     skip <- 4; date_col=1; tz="Etc/GMT-1"
@@ -106,6 +108,13 @@ dB_readStationData <- function(path, header.file, station)
       dummy <- dummy[header_org]
       names(dummy) <- names(data)
       rm(header.file_)
+    }
+    
+    if (length(header) > dim(dummy)[2])
+    {
+      for (i in (dim(dummy)[2]+1):length(header))
+        dummy[,i] <- NA
+      dummy <- as.data.frame(dummy)
     }
     
     data <- rbind(data,dummy)

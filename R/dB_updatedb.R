@@ -7,16 +7,19 @@
 dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1","M2","M3","M4","M5","M6","M7",
                                      "S2", "S4", "S5", "XS1", "XS6", "SF1", "SF2", "SF3", "SF4", "SF5"), 
                         variables = "TOTAL",
-                        path2data = "/mnt/alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/", 
+                        path2data = "/media/alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/", 
                         inCloud = "/home/jbr/ownCloud/data/SQL/",
-                        write_csv = TRUE,
-                        return_data = FALSE)
+                        write_csv = FALSE,
+                        return_data = TRUE)
 {
 
   for (j in variables)
   {
+    # mkdir if not exists
+    if (! dir.exists(inCloud)) dir.create(inCloud, FALSE, TRUE)
+    
     # connect to db in data folder of project
-    db = dbConnect(SQLite(), dbname=file.path(inCloud,paste(j,".sqlite",sep="")))
+    db = dbConnect(RSQLite::SQLite(), dbname=file.path(inCloud,paste(j,".sqlite",sep="")))
     
     out <- list()
     
@@ -41,16 +44,16 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
         data <- dB_getSWC(path2files, header.file, station = stationchr, station_nr = stationnr, calibrate = F, 
                           minVALUE = 0, maxVALUE = 1, aggregation = "n")
         
-        if(any(names(data)=="core5")) names(data)[which(names(data)=="core5")] <- "SWC_A_z5"
-        if(any(names(data)=="core20")) names(data)[which(names(data)=="core20")] <- "SWC_A_z20"
+        if(any(names(data)=="core5")) names(data)[which(names(data)=="core5")] <- "SWC_A_05"
+        if(any(names(data)=="core20")) names(data)[which(names(data)=="core20")] <- "SWC_A_20"
       }
       
       if (j == "TSoil") {
         data <- dB_getSoilTemp(path2files, header.file, station = stationchr, station_nr = stationnr,
                                minVALUE = -50, maxVALUE = 50, aggregation = "n")
         
-        if(any(names(data)=="core5")) names(data)[which(names(data)=="core5")] <- "TS_A_z5"
-        if(any(names(data)=="core20")) names(data)[which(names(data)=="core20")] <- "TS_A_z20"
+        if(any(names(data)=="core5")) names(data)[which(names(data)=="core5")] <- "ST_A_05"
+        if(any(names(data)=="core20")) names(data)[which(names(data)=="core20")] <- "ST_A_20"
       }
       
       if (j == "METEO") {
@@ -96,7 +99,6 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
     print(dbListTables(db))
     
     dbDisconnect(db)
-    
     
     if (j=="SMC")
     {
