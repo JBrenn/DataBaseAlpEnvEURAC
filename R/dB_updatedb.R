@@ -19,8 +19,7 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
     if (! dir.exists(inCloud)) dir.create(inCloud, FALSE, TRUE)
     
     # connect to db in data folder of project
-    sqlite <- dbDriver("SQLite")
-    db = dbConnect(sqlite, dbname=file.path(inCloud,paste(j,".sqlite",sep="")))
+    db = dbConnect(RSQLite::SQLite(), dbname=file.path(inCloud,paste(j,".sqlite",sep="")))
     
     out <- list()
     
