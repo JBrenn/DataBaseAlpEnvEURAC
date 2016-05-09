@@ -207,6 +207,17 @@ dB_readStationData <- function(path, header.file, station)
     }
   }
   
+  # remove duplicate datetimes
+  # data_ <- data[-anyDuplicated(time(data))]
+  
+  # make regular zoo.object
+  # if(!is.regular(data, strict = TRUE))
+  # {
+  #   # make regular
+  #   g <- zoo(x = NA, seq(head(index(data),1),tail(index(data),1),by=times("00:15:00")))
+  #   data <- merge(g,data)[,-1]
+  # }
+  
   # create regular zoo object
   zoo.data <- zoo(x=data, order.by=datetime)
   

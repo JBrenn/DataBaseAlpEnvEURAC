@@ -63,6 +63,9 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
       # remove data with NA date
       data <- data[!is.na(index(data))]
       
+      # remove duplicate datetimes
+      # data <- data[-anyDuplicated(time(data))]
+      
       if(!is.regular(data, strict = TRUE))
       {
         # make regular
