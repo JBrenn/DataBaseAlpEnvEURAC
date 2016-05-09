@@ -59,8 +59,8 @@ dB_getSWP <- function(path2files = "H:/Projekte/HiResAlp/06_Workspace/BrJ/02_dat
     
   }
   
-    core5  <- core[,grep("_z5", colnames(core))]
-    core20 <- core[,grep("_z20", colnames(core))]
+    core5  <- core[,grep("_05", colnames(core))]
+    core20 <- core[,grep("_20", colnames(core))]
     
     core <- cbind(core5, core20)
   

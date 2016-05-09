@@ -41,7 +41,7 @@ dB_getSWC <- function(path2files, header.file,
     # for all stations SWC
   data <- data_raw[,grep(pattern = "SWC_", x = dimnames(data_raw)[[2]])]
 
-  if (station == "B" | station == "I" | station == "P")
+  #if (station == "B" | station == "I" | station == "P")
   data <- data[,-grep(pattern = "_Std", x = dimnames(data)[[2]])]
   
   # NaN to NA
@@ -67,40 +67,40 @@ dB_getSWC <- function(path2files, header.file,
    print("delete freezing periods")
    
    if (station=="I") { patter <- "ST_"; addition <- TRUE; SWC_z2 <- FALSE; domean <- TRUE }
-   if (station=="B" & station_nr==1) { patter <- "TS_"; addition <- FALSE; SWC_z2 <- FALSE; domean <- TRUE }
-   if (station=="B" & station_nr==2) { patter <- "TS_"; addition <- FALSE; SWC_z2 <- FALSE; domean <- TRUE }
-   if (station=="B" & station_nr==3) { patter <- "TS_CS"; addition <- TRUE; SWC_z2 <- FALSE; domean <- FALSE }
+   if (station=="B" & station_nr==1) { patter <- "ST_"; addition <- FALSE; SWC_z2 <- FALSE; domean <- TRUE }
+   if (station=="B" & station_nr==2) { patter <- "ST_"; addition <- FALSE; SWC_z2 <- FALSE; domean <- TRUE }
+   if (station=="B" & station_nr==3) { patter <- "ST_CS"; addition <- TRUE; SWC_z2 <- FALSE; domean <- FALSE }
    if (station=="P") { patter <- "ST_"; addition <- TRUE; SWC_z2 <- TRUE; domean <- TRUE }
 #  if (station=="S" | station=="M") {patter <- "Temp"; addition <- FALSE; SWC_z2 <- FALSE; domean=FALSE }
    
    TS_data <- data_raw[,grep(pattern = patter, x = dimnames(data_raw)[[2]])]
 
-   if (station=="B" & station_nr==3) TS_data <- TS_data[,-grep(pattern = "_z50", x = dimnames(TS_data)[[2]])]
+   if (station=="B" & station_nr==3) TS_data <- TS_data[,-grep(pattern = "_50", x = dimnames(TS_data)[[2]])]
    if (station=="B" & station_nr==1) { 
-     TS_data <- TS_data[,-grep(pattern = "_z50", x = dimnames(TS_data)[[2]])]
+     TS_data <- TS_data[,-grep(pattern = "_50", x = dimnames(TS_data)[[2]])]
      TS_data <- TS_data[,-grep(pattern = "SWC", x = dimnames(TS_data)[[2]])]
    }
 
    if (domean) {
-     TS_data_z5  <- rowMeans(TS_data[,grep(pattern = "_z5", x = dimnames(TS_data)[[2]])], na.rm=T)
-     TS_data_z20 <- rowMeans(TS_data[,grep(pattern = "_z20", x = dimnames(TS_data)[[2]])], na.rm=T)
+     TS_data_z5  <- rowMeans(TS_data[,grep(pattern = "_05", x = dimnames(TS_data)[[2]])], na.rm=T)
+     TS_data_z20 <- rowMeans(TS_data[,grep(pattern = "_20", x = dimnames(TS_data)[[2]])], na.rm=T)
      
-     if(SWC_z2) TS_data_z2  <- rowMeans(TS_data[,grep(pattern = "_z2_", x = dimnames(TS_data)[[2]])], na.rm=T)
+     if(SWC_z2) TS_data_z2  <- rowMeans(TS_data[,grep(pattern = "_02", x = dimnames(TS_data)[[2]])], na.rm=T)
    } else {
-     TS_data_z5  <- TS_data[,grep(pattern = "_z5", x = dimnames(TS_data)[[2]])]
-     TS_data_z20 <- TS_data[,grep(pattern = "_z20", x = dimnames(TS_data)[[2]])]
+     TS_data_z5  <- TS_data[,grep(pattern = "_05", x = dimnames(TS_data)[[2]])]
+     TS_data_z20 <- TS_data[,grep(pattern = "_20", x = dimnames(TS_data)[[2]])]
      
-     if(SWC_z2) TS_data_z2  <- TS_data[,grep(pattern = "_z2_", x = dimnames(TS_data)[[2]])]
+     if(SWC_z2) TS_data_z2  <- TS_data[,grep(pattern = "_02", x = dimnames(TS_data)[[2]])]
    }
    
    # 2cm filter
    if (SWC_z2) {
-     for (i in grep(pattern = "_z2_", x = dimnames(data)[[2]])) core[,i] <- ifelse(TS_data_z2 < 0, NA, core[,i])
+     for (i in grep(pattern = "_02", x = dimnames(data)[[2]])) core[,i] <- ifelse(TS_data_z2 < 0, NA, core[,i])
    }
    # 5cm filter
-   for (i in grep(pattern = "_z5", x = dimnames(data)[[2]])) core[,i] <- ifelse(TS_data_z5 < 0, NA, core[,i])
+   for (i in grep(pattern = "_05", x = dimnames(data)[[2]])) core[,i] <- ifelse(TS_data_z5 < 0, NA, core[,i])
    # 20cm filter
-   for (i in grep(pattern = "_z20", x = dimnames(data)[[2]])) core[,i] <- ifelse(TS_data_z20 < 0, NA, core[,i])
+   for (i in grep(pattern = "_20", x = dimnames(data)[[2]])) core[,i] <- ifelse(TS_data_z20 < 0, NA, core[,i])
   }
   
   # INCLUDE CALIBRATION
@@ -148,10 +148,10 @@ dB_getSWC <- function(path2files, header.file,
     }
     
   } else {
-    core5 <- core[,grep("_z5", colnames(core))]
-    core20 <- core[,grep("_z20", colnames(core))]
+    core5 <- core[,grep("_05", colnames(core))]
+    core20 <- core[,grep("_20", colnames(core))]
     if (station=="I" | station=="P") {
-      core2 <- core[,grep("_z2_", colnames(core))]
+      core2 <- core[,grep("_02", colnames(core))]
       core <- cbind(core2, core5, core20)
     } else {
       core <- cbind(core5, core20)
@@ -165,17 +165,17 @@ dB_getSWC <- function(path2files, header.file,
   
   data <- zoo(core, time(data))
   
-  # harmonise colnames of data SWC_sensor_depth, e.g. SWC_LS_z5
-  if (station == "I" | station == "P")
-  {
-    newnames <- c()
-    for (i in 1:length(names(data)))
-    {
-      split <- strsplit(names(data)[i], "_")
-      newnames[i] <- paste(split[[1]][1], split[[1]][3], split[[1]][2], sep = "_")
-    }
-  names(data) <- newnames    
-  }
+  # # harmonise colnames of data SWC_sensor_depth, e.g. SWC_LS_z5
+  # if (station == "I" | station == "P")
+  # {
+  #   newnames <- c()
+  #   for (i in 1:length(names(data)))
+  #   {
+  #     split <- strsplit(names(data)[i], "_")
+  #     newnames[i] <- paste(split[[1]][1], split[[1]][3], split[[1]][2], sep = "_")
+  #   }
+  # names(data) <- newnames    
+  # }
   
   # daily aggregation
   if (aggregation == "d") data <- aggregate(x=data,by=as.Date(time(data)),FUN=mean, na.rm=T)

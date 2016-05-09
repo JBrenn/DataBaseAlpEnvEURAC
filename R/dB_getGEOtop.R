@@ -20,8 +20,8 @@
 
 dB_getGEOtop <- function(path2files, header.file,
                      station,
-                     READvar = c("Rain","WindSpeed","WindDirection","RH","Temp","SolarRadiation"),
-                     var2geotop = c("Rain","WindSpeed","WindDirection","RH","Temp","SolarRadiation", "CloudTrans"),
+                     READvar = c("Tip_Precip_Tot","Wind_Speed","Wind_Dir","RH","T_Air","SR_Sw"),
+                     var2geotop = c("Tip_Precip_Tot","Wind_Speed","Wind_Dir","RH","T_Air","SR_Sw", "CloudTrans"),
                      GEOtopVAR= c("Iprec", "WindSp", "WindDir", "RelHum", "AirT", "SWglobal", "CloudTrans"),
 #                     mkreg=FALSE,
                      aggr_time="h",

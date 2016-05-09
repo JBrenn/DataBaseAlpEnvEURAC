@@ -35,11 +35,12 @@ dB_getSoilTemp <- function(path2files, header.file,
   
   # filter SWC data
   # for all stations SWC
-  if (station=="B") data <- data_raw[,grep(pattern = "TS_", x = dimnames(data_raw)[[2]])]
-  if (station=="P" | station=="I") {
+  
+  #if (station=="B") data <- data_raw[,grep(pattern = "TS_", x = dimnames(data_raw)[[2]])]
+  #if (station=="P" | station=="I") {
     data <- data_raw[,grep(pattern = "ST_", x = dimnames(data_raw)[[2]])]
     data <- data[,-grep(pattern = "_Std", x = dimnames(data)[[2]])]
-  } 
+  #} 
   
 #   if (station == "B" | station == "I" | station == "P")
 #     data <- data[,-grep(pattern = "_Std", x = dimnames(data)[[2]])]
