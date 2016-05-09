@@ -80,7 +80,7 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
       
       datetime <- paste(date, time, sep=" ")
       
-      df <- data.frame(TIMESTAMP=datetime, coredata(data)[,-2])
+      df <- data.frame(TIMESTAMP=datetime, coredata(data)[,-1])
       
       # update litesql
       dbWriteTable(conn=db, name=i,
