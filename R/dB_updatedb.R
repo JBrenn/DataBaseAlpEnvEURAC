@@ -63,7 +63,7 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
       # remove data with NA date
       data <- data[!is.na(index(data))]
       
-      if(!is.regular(data),  strict = TRUE)
+      if(!is.regular(data, strict = TRUE))
       {
         # make regular
         g <- zoo(x = NA, seq(head(index(data),1),tail(index(data),1),by=times("00:15:00")))
