@@ -91,7 +91,9 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
       if (write_csv)
       {
         print(paste("save .csv for station", i, sep=" "))
+        df < -format(df, scientific = FALSE)
         write.csv(x = df, file = file.path(inCloud, paste(j, "_", i, ".csv", sep="")), quote = F, row.names = F)
+        #readr::write_csv(x = df, path = file.path(inCloud, paste(j, "_", i, ".csv", sep="")))
       }
       
       out[[i]] <- data
