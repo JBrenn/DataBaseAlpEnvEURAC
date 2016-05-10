@@ -29,11 +29,9 @@ boolean, if TRUE data is returned, default: TRUE
 }
 
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+List containing timer series zoo objects names as argument stations
+
+SQLite data base in th inCloud folder; if write.csv is TRUE, station wise .csv files (pretty format, to read with readr::read_csv or data.table::fread)
 }
 \references{
 %% ~put references to the literature/web site here ~
