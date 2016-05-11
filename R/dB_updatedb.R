@@ -81,7 +81,7 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
       
       datetime <- paste(date, time, sep=" ")
       
-      df <- data.frame(TIMESTAMP=datetime, coredata(data)[,-1])
+      df <- data.frame(TIMESTAMP=datetime, coredata(data))
       
       # update litesql
       dbWriteTable(conn=db, name=i,
@@ -113,7 +113,7 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
         print("moving database swc.sqlite into data folder of the package SMCcalibration")
         require("SMCcalibration")
         pkg_path <- path.package("SMCcalibration") 
-        system(paste("mv", file.path(inCloud,"SWC.sqlite"), file.path(pkg_path,"data","SWC.sqlite")))
+        system(paste("mv", file.path(inCloud,"SWC.sqlite"), file.path(pkg_path,"data","swc.sqlite")))
       }
     }
   }
