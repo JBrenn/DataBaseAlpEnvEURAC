@@ -26,6 +26,7 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
     for (i in stations)
     {
       stationchr <- substr(i, 1, nchar(i)-1)
+      stationchr_ <- stationchr
       
       if (stationchr == "XS") stationchr <- "S"
       
@@ -41,7 +42,7 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
       }
       
       if (j == "SWC") {
-        data <- dB_getSWC(path2files, header.file, station = stationchr, station_nr = stationnr, calibrate = F, 
+        data <- dB_getSWC(path2files, header.file, station = stationchr_, station_nr = stationnr, calibrate = F, 
                           minVALUE = 0, maxVALUE = 1, aggregation = "n")
         
         if(any(names(data)=="core5")) names(data)[which(names(data)=="core5")] <- "SWC_A_05"
