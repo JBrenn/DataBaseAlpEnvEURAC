@@ -110,10 +110,10 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
     {
       if (any(row.names(installed.packages())=="SMCcalibration") & !is.null(inCloud)) 
       {
-        print("moving database swc.sqlite into data folder of the package SMCcalibration")
+        print("copy database swc.sqlite into data folder of the package SMCcalibration")
         require("SMCcalibration")
         pkg_path <- path.package("SMCcalibration") 
-        system(paste("mv", file.path(inCloud,"SWC.sqlite"), file.path(pkg_path,"data","swc.sqlite")))
+        system(paste("cp", file.path(inCloud,"SWC.sqlite"), file.path(pkg_path,"data","swc.sqlite")))
       }
     }
   }
