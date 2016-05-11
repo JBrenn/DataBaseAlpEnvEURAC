@@ -1,0 +1,294 @@
+---
+title: "AirTemperature and Precipitation in SouthTyrol | Data Availability and Quality"
+author: "Johannes Brenner"
+date: "17. Juli 2015"
+output: html_document
+runtime: shiny
+---
+  
+***
+  
+This R Markdown document is made interactive using Shiny. To learn more, see [Interactive Documents](http://rmarkdown.rstudio.com/authoring_shiny.html).
+
+***
+
+####Data Origin And Pupose Of Use
+ 
+In South Tyrol a dense network of micro-climate stations is set up since long term. Maintainer of these station is the [Hydrographic Office of the Province Bozen/Bolzano](http://www.provinz.bz.it/wetter/home.asp). Minimum, mean and maximum air temperature and precipitation data has been downloaded on daily basis from their WISKI database. This data is intended to be used for statistical downscaling of regional climate projections, an important step towards realistic forcing for climate impact assessment models.
+This document provides
+
+* quality check of the whole data set (calculation of quality indices)
+* visualisation of gaps in the time series (monthly basis),
+* visualisation of the time series (daily scale),
+* interpolation of the time series, and calculation of, accordingly, enhanced quality measures.
+
+***
+
+```{r, include=FALSE}
+
+mir <- "http://cran.us.r-project.org"
+
+if(!require(rgdal)) 
+{
+  install.packages("rgdal", repos = mir)
+  require(rgdal)
+}
+if(!require(leaflet)) 
+{
+  install.packages("leaflet", repos = mir)
+  require(leaflet)
+}
+if(!require(zoo)) 
+{
+  install.packages("zoo", repos = mir)
+  require(zoo)
+}
+if(!require(data.table)) 
+{
+  install.packages("data.table", repos = mir)
+  require(data.table)
+}
+if(!require(DataBaseAlpEnvEURAC))
+{
+  if(!require(devtools))
+  {
+  install.packages("devtools", repos = mir)
+  require(devtools)
+  }
+  install_github("DataBaseAlpEnvEURAC", "JBrenn")
+  require(DataBaseAlpEnvEURAC)
+}
+if(!require(dygraphs))
+{
+  install.packages("dygraphs", repos = mir)
+  require(dygraphs)
+}
+if(!require(d3heatmap))
+{
+  install.packages("d3heatmap", repos = mir)
+  require(d3heatmap)
+}
+```
+
+####Where are the climate stations?
+
+Below one can get an impression of the density of the South Tyrolean meteo network for air temperature. Here available stations providing daily data are shown, high elevation stations are shown in darker grey. The station you choose to discover is marked within a red circle.
+
+```{r, echo=FALSE}
+# read geographic information
+# from file 
+# st_Tmax <- read.csv("/run/user/1000/gvfs/smb-share:server=abz02fst.eurac.edu,share=alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/WISKI/Stations_Tmax.csv")
+# 
+# xy <- project(xy =  cbind(st_Tmax$X_UTM,st_Tmax$Y_UTM), proj = "+proj=utm +zone=32 +ellps=WGS84 +units=m +no_defs", inv = T)
+# 
+# st_Tmax$long <- xy[,1]; st_Tmax$lat <- xy[,2]
+# from DataBseAlpEnv lib
+
+data(st_Tmax)
+st_Tmax <- st_Tmax
+
+data(st_N)
+st_N <- st_N
+
+st_Tmax <- st_Tmax[order(st_Tmax$HOEHE),]
+
+renderLeaflet({
+  col <- grey.colors(n = length(st_Tmax$long), start=.5, end=0)
+  namesST <- paste("st", st_Tmax$NUMMER, sep="")
+  colIT <- which(namesST==input$station)
+  col[colIT] <- "#bd0026"
+  
+  rad <- rep(5, length(st_Tmax$long))
+  rad[colIT] <- 10
+  
+  leaflet() %>%
+   addProviderTiles("Acetate.terrain") %>%
+   addTiles(options = providerTileOptions(opacity = 0.75)) %>%  # Add default OpenStreetMap map tiles
+   addCircleMarkers(lng=st_Tmax$long, lat=st_Tmax$lat, popup=paste(st_Tmax$NUMMER, st_Tmax$STATION_D, ", ",  st_Tmax$HOEHE, "m a.s.l"), color = col, radius=rad, fill = F, group = "Air Temperature") %>%
+    addCircleMarkers(lng=st_N$long, lat=st_N$lat, popup=paste(st_N$NUMMER, st_N$STATION_D, ", ",  st_N$HOEHE, "m a.s.l"), radius=2.3, fill = F, group = "Precipitation") %>%
+    addLayersControl(overlayGroups = c("Air Temperature", "Precipitation"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+  })
+
+inputPanel(
+   selectInput(inputId = "station", label = "discover data from station", choices = names(T_N_southtyrol))
+)
+
+
+```
+
+
+```{r, echo=FALSE}
+
+# from DataBaseAlpEnv lib
+data(T_N_ST)
+T_N_southtyrol <- T_N_southtyrol
+
+```
+
+***
+
+####First data quality overview
+
+A short summary table on data quality is provided for the whole data set. Below a short description of the colomns:
+
+* _SufficientObsPeriod_:    Has time series a consecutive length longer than 20 years? [TRUE=1]
+* _#ConsecutiveYears_:      How long is the consecutive time series [YEARs]?
+* _SufficientNAqual_:       Has the consecutive time series less than specified percentage of NA values?
+* _%NAs4consecutiveYears_:  Percent of NAs in consecutive time series.
+* _#NAs4consecutiveYears_:  Sum of NAs in consecutive time series.
+
+```{r, echo=FALSE, warning=FALSE}
+
+renderDataTable({
+    if (input$variable=="Mean daily air temperature") {var <- "LT_Tmean"} else {var <- "N_1440"}
+    if(input$interpolation=="only raw time series") interpol = F else interpol = T
+    
+  df <- sapply(X = T_N_southtyrol, FUN = function(x, interpol){
+      
+    if (any(dimnames(x)[[2]] == var)) {  
+      
+      if(!interpol) data <- x[,var]
+      if(interpol)
+    {
+      data <- x[,var]
+      LT_Tmean_interpol <- na.spline(object = data,  na.rm = F, maxgap = input$maxgap)
+      data <-  LT_Tmean_interpol
+    }
+
+    data_consYmon <- aggregate(data, as.yearmon(time(data)), FUN = function(x) {
+      any(!is.na(x))
+    })
+    begin_mon <- time(data_consYmon)[which(data_consYmon)[1]]
+    end_mon   <- time(data_consYmon)[tail(which(data_consYmon),1)] 
+    
+    data_consY <- aggregate(data, format(time(data), "%Y"), FUN = function(x) {
+      any(!is.na(x))
+    })
+    Nr_consY <- sum(data_consY)
+    Qu_use   <- if(Nr_consY <= input$NrYears) FALSE else TRUE
+    
+    consY_start <- as.Date(paste("01-01-", time(data_consY)[which(data_consY)[1]], sep=""), "%d-%m-%Y")
+    consY_end   <- tail(time(data),1)
+    data_consY <- window(x = data, start = consY_start, end = consY_end)
+    NAsInConsY <- sum(is.na(data_consY))
+    NAsInConsYprc <- round(NAsInConsY / length(data_consY) *100, 1)
+    Qu_use_NA <- if (NAsInConsYprc < input$NApercent) TRUE else FALSE
+    
+    out_v <- c(Qu_use, Nr_consY, Qu_use_NA, NAsInConsYprc, NAsInConsY, begin_mon, end_mon)
+    names(out_v) <- c("SufficientObsPeriod","#ConsecutiveYears", "SufficientNAqual", "%NAs4consecutiveYears","#NAs4consecutiveYears","SeriesStart", "SeriesEnd")
+    
+    return(out_v)
+    
+  } else {
+    out_v <- rep(NA,7)
+    names(out_v) <- c("SufficientObsPeriod","#ConsecutiveYears", "SufficientNAqual", "%NAs4consecutiveYears","#NAs4consecutiveYears","SeriesStart", "SeriesEnd")
+    
+    return(out_v)
+  }
+    
+  }, interpol=interpol)  
+  
+  stations <- dimnames(df)[[2]]
+  df_t <- as.data.frame(t(df))
+  df_t$Station <- stations
+
+  df_t$SeriesStart <- as.yearmon(df_t$SeriesStart)
+  df_t$SeriesEnd <- as.yearmon(df_t$SeriesEnd)
+  
+  df_t <- df_t[,c(8,1:7)]
+
+}, options = list(pageLength=5, lengthMenu=c(5, 10, 15, 20, 50, 100)))
+```
+
+Choose a variable you want to discover and define thresholds for high quality time series for the summary table above:
+
+```{r, echo=FALSE, warning=FALSE}
+
+inputPanel(
+  radioButtons(inputId = "variable", label = "discover", choices = c("Mean daily air temperature","Daily precipitation sums"), selected = "Mean daily air temperature", inline = FALSE),
+  sliderInput(inputId = "NrYears", label = "Number of consecutive years", min = 1, max = 35, value = 30, step = c(1:35)),
+   sliderInput(inputId = "NApercent", label = "Percentage of NAs", min = 0, max = 25, value = 10, step = c(1:25))
+)
+
+
+```
+
+***
+
+####Which months do have an adequate data quality?
+
+As for statistical downscaling a time series of at least 20 years is necessary the more general question to ask is: For how many years good quality data is available for the specific station? The heatmap below gives an answer for the choosen station. For each month the percentage of days the choosen variable was measured are shown. 
+Highlighting of rows and colomns as well as zooming is provided.
+
+***
+
+```{r, echo=FALSE}
+
+renderD3heatmap({
+  if (input$variable=="Mean daily air temperature") {var <- "LT_Tmean"} else {var <- "N_1440"}
+  if(input$interpolation=="only raw time series") data <- T_N_southtyrol[[input$station]][,var]
+  if(input$interpolation=="add interpolated time series")
+  {
+    data <- T_N_southtyrol[[input$station]][,var]
+    LT_Tmean_interpol <- na.spline(object = data,  na.rm = F, maxgap = input$maxgap)
+    data <-  LT_Tmean_interpol
+   }
+
+data_perc <- aggregate(x = data, by = as.yearmon(time(data)), FUN = function(x) {
+  y <- sum(!is.na(x)) / length(x) *100
+  y <- round(y,0)
+})
+start_mon <- as.integer(format(time(data)[1],"%m"))
+end_mon   <- as.integer(format(tail(time(data),1),"%m"))
+if (start_mon == 1 & end_mon == 12) data_perc <- matrix(c(coredata(data_perc)), ncol=12, byrow = T)
+if (start_mon != 1 & end_mon == 12) data_perc <- matrix(c(rep(NA,start_mon-1),coredata(data_perc)), ncol=12, byrow = T)
+if (start_mon == 1 & end_mon != 12) data_perc <- matrix(c(coredata(data_perc),rep(NA,12-end_mon)), ncol=12, byrow = T)
+if (start_mon != 1 & end_mon != 12) data_perc <- matrix(c(rep(NA,start_mon-1),coredata(data_perc),rep(NA,12-end_mon)), ncol=12, byrow = T)
+  
+end_year <- as.integer(format(tail(time(data),1),"%Y"))
+dimnames(data_perc) <- list((end_year-nrow(data_perc)+1):end_year,month.abb)
+
+d3heatmap(data_perc, scale = "none", colors = "RdYlBu", dendrogram = "none", na.rm = T)
+})
+
+```
+
+***
+
+####How does the series look in detail?
+
+Looking to the series of mean temperature in detail gives you a guess if interpolation of values can help to create sufficent data quality. If you choose _add interpolated time series_ the time series is interpolated with a spline methodology. You can adjust the maximum number of consecutive NAs to fill. Zooming the graph or adding a rolling mean (left bottom corner) to better discover the time series is provided. Moreover, this option is changing the results of the summary table and the heatmap accordingly. Instead of the raw data sets, now the interpolated data sets are used for calculations.
+
+```{r, echo=FALSE, warning=FALSE}
+inputPanel(
+   radioButtons(inputId = "interpolation", label = "show interpolated time series?", choices = c("only raw time series","add interpolated time series"), selected = "only raw time series", inline = FALSE),
+   sliderInput(inputId = "maxgap", label = "Consecutive NAs to fill", min = 1, max = 30, value = 4, step = c(1:30))
+)
+
+renderDygraph({
+  if (input$variable=="Mean daily air temperature") {
+    var <- "LT_Tmean"
+    unit <- "degC" } else {
+      var <- "N_1440"
+      unit <- "mm per day"
+    }
+  if(input$interpolation=="only raw time series") data <- T_N_southtyrol[[input$station]][,var]
+  if(input$interpolation=="add interpolated time series") 
+  {
+    data <- T_N_southtyrol[[input$station]][,var]
+    LT_Tmean_interpol <- na.spline(object = data,  na.rm = F, maxgap = input$maxgap)
+    data <- merge(LT_Tmean_interpol,data)
+    names(data) <- c("MeanAirTemp_SplineInterpol","MeanAirTemp")
+   }
+    
+  dygraph(data, ylab=unit) %>%
+    dyRangeSelector() %>%
+    dyRoller()
+  
+})
+
+```
+
+***
