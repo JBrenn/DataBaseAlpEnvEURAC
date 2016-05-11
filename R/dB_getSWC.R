@@ -17,12 +17,12 @@
 
 dB_getSWC <- function(path2files, header.file,
                    station, station_nr,
-                   calibrate=FALSE, 
-                   aggregation, 
-                   minVALUE=0.05, maxVALUE=.5,
-                   clear_raw_data=FALSE,
-                   remove_freezing=FALSE,
-                   write.csv=FALSE,
+                   calibrate = FALSE, 
+                   aggregation = "n", 
+                   minVALUE = 0.05, maxVALUE = .5,
+                   clear_raw_data = FALSE,
+                   remove_freezing = FALSE,
+                   write.csv = FALSE,
                    path2write)
 {
   #require(zoo)
@@ -116,19 +116,19 @@ dB_getSWC <- function(path2files, header.file,
       row <- cal$STATION==paste(station, station_nr, sep="") & cal$DEPTH=="SMC5"
       slp <- cal$slope[row]
       int <- cal$intercept[row]   
-      core2 <- int + core[,grep("_z2_", colnames(core))] * slp
+      core2 <- int + core[,grep("_02", colnames(core))] * slp
     
     # 5cm
       row <- cal$STATION==paste(station, station_nr, sep="") & cal$DEPTH=="SMC5"
       slp <- cal$slope[row]
       int <- cal$intercept[row]   
-      core5 <- int + core[,grep("_z5", colnames(core))] * slp
+      core5 <- int + core[,grep("_05", colnames(core))] * slp
       
     # 20cm
       row <- cal$STATION==paste(station, station_nr, sep="") & cal$DEPTH=="SMC20"
       slp <- cal$slope[row]
       int <- cal$intercept[row]   
-      core20 <- int + core[,grep("_z20", colnames(core))] * slp  
+      core20 <- int + core[,grep("_20", colnames(core))] * slp  
       
       core <- cbind(core2, core5, core20)
     } else {
@@ -136,13 +136,13 @@ dB_getSWC <- function(path2files, header.file,
       row <- cal$STATION==paste(station, station_nr, sep="") & cal$DEPTH=="SMC5"
       slp <- cal$slope[row]
       int <- cal$intercept[row]   
-      core5 <- int + core[,grep("_z5", colnames(core))] * slp
+      core5 <- int + core[,grep("_05", colnames(core))] * slp
       
       # 20cm
       row <- cal$STATION==paste(station, station_nr, sep="") & cal$DEPTH=="SMC20"
       slp <- cal$slope[row]
       int <- cal$intercept[row]   
-      core20 <- int + core[,grep("_z20", colnames(core))] * slp
+      core20 <- int + core[,grep("_20", colnames(core))] * slp
       
       core <- cbind(core5, core20)
     }
