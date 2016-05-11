@@ -41,8 +41,8 @@ dB_getSWC <- function(path2files, header.file,
     # for all stations SWC
   data <- data_raw[,grep(pattern = "SWC_", x = dimnames(data_raw)[[2]])]
 
-  #if (station == "B" | station == "I" | station == "P")
-  data <- data[,-grep(pattern = "_Std", x = dimnames(data)[[2]])]
+  if (station == "B" | station == "I" | station == "P")
+    data <- data[,-grep(pattern = "_Std", x = dimnames(data)[[2]])]
   
   # NaN to NA
   core <- ifelse(is.nan(coredata(data)), NA, coredata(data))
