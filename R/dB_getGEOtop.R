@@ -23,7 +23,6 @@ dB_getGEOtop <- function(path2files, header.file,
                      READvar = c("Tip_Precip_Tot","Wind_Speed","Wind_Dir","RH","T_Air","SR_Sw"),
                      var2geotop = c("Tip_Precip_Tot","Wind_Speed","Wind_Dir","RH","T_Air","SR_Sw", "CloudTrans"),
                      GEOtopVAR= c("Iprec", "WindSp", "WindDir", "RelHum", "AirT", "SWglobal", "CloudTrans"),
-#                     mkreg=FALSE,
                      aggr_time="h",
                      cut_date=FALSE,
                      time_window,
@@ -45,13 +44,13 @@ dB_getGEOtop <- function(path2files, header.file,
   
   # if time series is not strictly regular: set missing timesteps to NA
   # e.g. for M1 | 2013-05-27 to 2014-03
-  if (!is.regular(data))
+  # make regular zoo.object
+  if(!is.regular(data, strict = TRUE))
   {
-    # sequence from start to end data by 15min
-    g <- zoo(x = NA, seq(head(index(data),1),tail(index(data),1),by=1/24/4))
-    data <- merge(data,g)[,1:dim(data)[2]]
+    # make regular
+    g <- zoo(x = NA, seq(head(index(data),1), tail(index(data),1), by=times("00:15:00")))
+    zoo.data <- merge(g,data)[,-1]
   }
-
   # DO data quality
   var <- names(data)
   
@@ -140,9 +139,9 @@ dB_getGEOtop <- function(path2files, header.file,
   
   for(i in var)
   {
-    if (i == "Rain")
+    if (i == "Tip_Precip_Tot")
       dummy <- cbind(dummy, coredata(aggregate(x = data[,i], by = aggr_vec, FUN = sum, na.rm=FALSE)))
-    if (i == "Temp" | i == "RH" | i == "SolarRadiation" | i == "WindSpeed" | i == "WindDirection" | 
+    if (i == "T_Air" | i == "RH" | i == "SR_Sw" | i == "Wind_Speed" | i == "Wind_Dir" | 
           i == "SnowDepth")
       dummy <- cbind(dummy, coredata(aggregate(x = data[,i], by = aggr_vec, FUN = mean, na.rm=TRUE)))
   }
@@ -161,9 +160,15 @@ dB_getGEOtop <- function(path2files, header.file,
   if (cut_date)
   {
     # end & start date in chron
-    start <- chron(dates. = substr(time_window[1],1,10), times. = substr(time_window[1],12,19),
+    date_start <- format(as.Date(time_window[1]), "%Y/%m/%d")
+    date_end   <- format(as.Date(time_window[2]), "%Y/%m/%d")
+    
+    if (substr(time_window[1],12,19) == "") time_start <- "00:00:00" else time_start <- substr(time_window[1],12,19)
+    if (substr(time_window[2],12,19) == "") time_end   <- "00:00:00" else time_end   <- substr(time_window[2],12,19)
+    
+    start <- chron(dates. = date_start, times. = time_start,
                    format=c(dates = "y/m/d", times = "h:m:s"), out.format = c(dates = "m/d/y", times = "h:m:s"))
-    end <- chron(dates. = substr(time_window[2],1,10), times. = substr(time_window[1],12,19), 
+    end <- chron(dates. = date_end, times. = time_end, 
                  format=c(dates = "y/m/d", times = "h:m:s"), out.format = c(dates = "m/d/y", times = "h:m:s"))
     start_num <- which(as.character(time(data))==as.character(start))
     end_num   <- which(as.character(time(data))==as.character(end))
@@ -175,11 +180,11 @@ dB_getGEOtop <- function(path2files, header.file,
   # skip winter precipitation
   if (skipwinter)
   {
-    data$Rain <- ifelse(!is.na(data$Temp) & data$Temp<(TempThresh) & data$Rain > 0, NA, data$Rain)
-    data$Rain <- ifelse(is.na(data$Temp) & data$Rain > 0 & 
+    data$Tip_Precip_Tot <- ifelse(!is.na(data$T_Air) & data$T_Air<(TempThresh) & data$Tip_Precip_Tot > 0, NA, data$Tip_Precip_Tot)
+    data$Tip_Precip_Tot <- ifelse(is.na(data$T_Air) & data$Tip_Precip_Tot > 0 & 
                           ( as.integer(substr(time(data),2,3)) == 11 | as.integer(substr(time(data),2,3)) == 12 |
                               as.integer(substr(time(data),2,3)) == 1 | as.integer(substr(time(data),2,3)) == 2),
-                        NA, data$Rain)
+                        NA, data$Tip_Precip_Tot)
   }
   
   # NA value = -9999
@@ -191,9 +196,9 @@ dB_getGEOtop <- function(path2files, header.file,
   for (i in 1:length(GEOtopVAR))
   {
     geotopvar <- GEOtopVAR[i]
-    if ( (geotopvar == "Iprec" & "Rain" %in% var) | (geotopvar == "WindSp" & "WindSpeed" %in% var) |
-           (geotopvar == "WindDir" & "WindDirection" %in% var) | (geotopvar == "RelHum" & "RH" %in% var) |
-           (geotopvar == "AirT" & "Temp" %in% var) | (geotopvar == "SWglobal" & "SolarRadiation" %in% var) | 
+    if ( (geotopvar == "Iprec" & "Tip_Precip_Tot" %in% var) | (geotopvar == "WindSp" & "Wind_Speed" %in% var) |
+           (geotopvar == "WindDir" & "Wind_Dir" %in% var) | (geotopvar == "RelHum" & "RH" %in% var) |
+           (geotopvar == "AirT" & "T_Air" %in% var) | (geotopvar == "SWglobal" & "SR_Sw" %in% var) | 
            (geotopvar == "CloudTrans" & "CloudTrans" %in% var) ) {
       dat <- round(coredata(data[,var2geotop[i]]),2)
       dummy <- cbind(dummy, dat)
