@@ -8,26 +8,23 @@ Get meteorological data from micro-meteo station (Mazia/Matsch) in GEOtop format
 Create GEOtop meteo input file from raw micro-meteo station (Mazia/Matsch) for a specific time frame
 }
 \usage{
-dB_getGEOtop(path2files, header.file, station, 
+dB_getGEOtop(path2data, station, 
              READvar = c("Rain","WindSpeed","WindDirection","RH","Temp",
                          "SolarRadiation"), 
              var2geotop = c("Rain","WindSpeed","WindDirection","RH","Temp",
                             "SolarRadiation", "CloudTrans"), 
              GEOtopVAR= c("Iprec", "WindSp", "WindDir", "RelHum", "AirT",
                           "SWglobal", "CloudTrans"), 
-             aggr_time, cut_date=FALSE, time_window, file.name=NULL, skipwinter=FALSE,
-             TempThresh=-2, tz="Etc/GMT-1")
+             aggr_time, cut_date=FALSE, time_window, 
+             skipwinter=FALSE, TempThresh=-2, tz="Etc/GMT-1")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{path2files}{
-  path to meteo files
-  }
-  \item{header.file}{
-  header file, absolute path and file name
+  \item{path2data}{
+  path to meteo data
   }
   \item{station}{
-  station specification, e.g. "B2"
+  station specification, e.g. "B2", multiple stations are looped
   }
   \item{READvar}{
   variables to selecting for retrieving data
@@ -38,9 +35,6 @@ dB_getGEOtop(path2files, header.file, station,
   \item{GEOtopVAR}{
   variables included in GEOtop input file (GEOtop names) 
   }
-%  \item{mkreg}{
-%  make time series data regular
-%  }
   \item{aggr_time}{
   character, time aggregation applied. "n" no aggregation of raw data,"h": hourly, "d": daily
   }
@@ -49,9 +43,6 @@ dB_getGEOtop(path2files, header.file, station,
   }
   \item{time_window}{
   as.POSIXct vector, start and end datetime for the period data should be retrieved
-  }
-  \item{file.name}{
-  default = NULL; name of file written out
   }
   \item{skipwinter}{
   boolean, set winter precipitation NA; adjustable by the argument \command{TempThresh}, see below
