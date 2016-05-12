@@ -57,7 +57,7 @@ dB_getGEOtop <- function(path2files, header.file,
   for (i in var)
   {
     #PRECIPITATION
-    if (i=="Rain")
+    if (i=="Tip_Precip_Tot")
     {
       # MIN <0
       coredata(data[,i]) <- ifelse(coredata(data[,i])<0, 0, coredata(data[,i]))
@@ -69,7 +69,7 @@ dB_getGEOtop <- function(path2files, header.file,
     }
     
     # AIR TEMPERATURE
-    if (i=="Temp")
+    if (i=="T_Air")
     {
       # MIN
       coredata(data[,i]) <- ifelse(coredata(data[,i]) < (-39), NA, coredata(data[,i]))
@@ -87,7 +87,7 @@ dB_getGEOtop <- function(path2files, header.file,
     }
     
     # SOLAR RADIATION
-    if (i=="SolarRadiation")
+    if (i=="SR_Sw")
     {
       # MIN
       coredata(data[,i]) <- ifelse(coredata(data[,i])< 0, NA, coredata(data[,i]))
@@ -95,7 +95,7 @@ dB_getGEOtop <- function(path2files, header.file,
       coredata(data[,i]) <- ifelse(coredata(data[,i])> 1500, NA, coredata(data[,i]))
     }
     # WIND SPEED
-    if (i=="WindSpeed")
+    if (i=="Wind_Speed")
     {
       # MIN
       coredata(data[,i]) <- ifelse(coredata(data[,i])< 0, 0, coredata(data[,i]))
@@ -104,7 +104,7 @@ dB_getGEOtop <- function(path2files, header.file,
                                    coredata(data[,i]))
     }
     # WIND DIRECTION
-    if (i=="WindDirection")
+    if (i=="Wind_Dir")
     {
       # MIN
       coredata(data[,i]) <- ifelse(coredata(data[,i])< 0, NA, coredata(data[,i]))

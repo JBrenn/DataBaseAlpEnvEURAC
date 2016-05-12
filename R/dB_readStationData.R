@@ -117,8 +117,6 @@ dB_readStationData <- function(path, header.file, station)
       dummy <- as.data.frame(dummy)
     }
     
-    data <- rbind(data,dummy)
-    
     # extract date and time
     
   # differing datetime formats
@@ -167,6 +165,19 @@ dB_readStationData <- function(path, header.file, station)
                           format= c(dates = "d.m.y", times = "h:m:s"),
                           out.format = c(dates = "y-m-d", times = "h:m:s")))
 #as.POSIXct(strptime(x=dummy[,date_col], format="%d.%m.%Y %H:%M", tz=tz)) )
+    
+    # cut data in M7 2014-07-12 to 2014-09-12 - Hobo problems
+    if (i == "M7 total 2009-2014.csv") 
+    {
+      cut_rows <- which(as.numeric(datetime) > as.numeric(chron(dates. = "07/12/2014", times. =  "00:00:00")) &
+                        as.numeric(datetime) < as.numeric(chron(dates. = "09/12/2014", times. =  "23:45:00")))
+      
+      for (cols2NA in 3:13) {
+        dummy[cut_rows,cols2NA] <- NA
+      }
+    }
+    
+    data <- rbind(data,dummy)
   }
   
   datetime <- datetime[-1]

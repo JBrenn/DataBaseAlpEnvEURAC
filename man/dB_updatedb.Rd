@@ -1,5 +1,5 @@
-\name{CAL_updatedb}
-\alias{CAL_updatedb}
+\name{dB_updatedb}
+\alias{dB_updatedb}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 update SQLite database
@@ -8,7 +8,7 @@ update SQLite database
 Writing / Updating SQLite database which is used for downloading data with the SWC calibration tool (shiny app). 
 }
 \usage{
-CAL_updatedb(stations, variables, path2data, inCloud, write.csv, return_data)
+dB_updatedb(stations, variables, path2data, inCloud, write.csv, return_data)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
