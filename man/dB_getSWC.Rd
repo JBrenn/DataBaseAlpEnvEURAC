@@ -1,28 +1,24 @@
 \name{dB_getSWC}
 \alias{dB_getSWC}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Get soil moisture data from EURAC micro-meteo station (Mazia/Matsch)
+\title{Get regular soil moisture time series from EURAC micro-meteo station (Mazia/Matsch)
 %%  ~~function to do ... ~~
 }
 \description{
-Retrieve soil moisture data from EURAC micro-meteo station located in Mazia/Matsch
+Retrieve regular soil moisture time series from EURAC micro-meteo station located in Mazia/Matsch
 }
 \usage{
-dB_getSWC(path2files, header.file, station, station_nr, calibrate=FALSE, aggregation, minVALUE=0.05, maxVALUE=0.50, clear_raw_data=FALSE, remove_freezing=FALSE, write.csv=FALSE, path2write)
+dB_getSWC(path2data, station, calibrate=FALSE, aggregation="n", 
+          minVALUE=0.05, maxVALUE=0.50, clear_raw_data=FALSE, remove_freezing=FALSE, 
+          write.csv=FALSE, path2write="./")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{path2files}{
+  \item{path2data}{
   path to meteo files
   }
-  \item{header.file}{
-  header file, absolute path and file name
-  }
    \item{station}{
-  character, name of micro-meteo station, e.g. "B"
-  }
-  \item{station_nr}{
-  integer, number of micro-meteo station, e.g. 2
+  character, name of micro-meteo station, e.g. "B2"
   }
   \item{calibrate}{
   boolean, default FALSE: use of uncalibrated SMC data; TRUE: calibrated SMC sensor data is used for comparision with simulated SMC, calibration parameters are retrieved from the package data via \emph{data(calibration)}
@@ -55,7 +51,7 @@ dB_getSWC(path2files, header.file, station, station_nr, calibrate=FALSE, aggrega
 \value{
 \enumerate{
   \item zoo object containing processed data
-  \item file output containing processed data, .csv format
+  \item file output containing processed data in .csv format, if write.csv = TRUE
 }
 %%  ~Describe the value returned
 %%  If it is a LIST, use

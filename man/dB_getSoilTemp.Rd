@@ -1,28 +1,23 @@
 \name{dB_getSoilTemp}
 \alias{dB_getSoilTemp}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Get soil temperature from EURAC micro-meteo station (Mazia/Matsch)
+\title{Get regular soil temperature time series from EURAC micro-meteo station (Mazia/Matsch)
 %%  ~~function to do ... ~~
 }
 \description{
 Retrieve soil temperature data from EURAC micro-meteo station located in Mazia/Matsch
 }
 \usage{
-dB_getSoilTemp(path2files, header.file, station, station_nr, aggregation, minVALUE=-30, maxVALUE=30, clear_raw_data=FALSE, write.csv=FALSE, path2write)
+dB_getSoilTemp(path2data, station, aggregation="n", minVALUE=-30, maxVALUE=30, clear_raw_data=FALSE, 
+               write.csv=FALSE, path2write="./")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{path2files}{
-  path to meteo files
-  }
-  \item{header.file}{
-  header file, absolute path and file name
+  \item{path2data}{
+  path to meteo data
   }
    \item{station}{
-  character, name of micro-meteo station, e.g. "B"
-  }
-  \item{station_nr}{
-  integer, number of micro-meteo station, e.g. 2
+  character, name of micro-meteo station, e.g. "B2"
   }
   \item{aggregation}{
   character, time aggregation applied. "n" no aggregation of raw data,"h": hourly, "d": daily
@@ -49,7 +44,7 @@ dB_getSoilTemp(path2files, header.file, station, station_nr, aggregation, minVAL
 \value{
 \enumerate{
   \item zoo object containing processed data
-  \item file output containing processed data, .csv format
+  \item file output containing processed data in .csv format, if write.csv = TRUE
 }
 %%  ~Describe the value returned
 %%  If it is a LIST, use

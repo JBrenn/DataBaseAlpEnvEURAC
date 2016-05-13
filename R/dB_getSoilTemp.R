@@ -13,9 +13,10 @@
 #               file name: SWC_aggregation_cleared?_station.csv
 # path2write    path data should be written to
 
-dB_getSoilTemp <- function(path2files, header.file,
-                   station, station_nr,
-                   aggregation, 
+dB_getSoilTemp <- function(
+                   path2data = "/media/alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia",
+                   station,
+                   aggregation = "n", 
                    minVALUE=-30, maxVALUE=30,
                    clear_raw_data=FALSE,
                    write.csv=FALSE,
@@ -31,7 +32,18 @@ dB_getSoilTemp <- function(path2files, header.file,
   #source("H:/Projekte/HiResAlp/06_Workspace/BrJ/04_R_data_analyses/data_base/FUN_readStationData2zoo.R")
   #source(("H:/Projekte/HiResAlp/06_Workspace/BrJ/04_R_data_analyses/FunctionsAllg/chron.R"))
   
-  data_raw <- dB_readStationData(path = path2files, header.file = header.file, station=paste(station,station_nr,sep=""))
+  station_nr <- as.integer(substr(station, nchar(station), nchar(station)))
+  
+  station_  <- substr(station, 1, nchar(station)-1)
+  
+  if (station_ == "XS") station_ <- "S"
+  
+  path2files = file.path(path2data,station_,station)
+  header.file = file.path(path2data,station_,paste("header_",station,".txt",sep=""))
+  
+  data_raw <- dB_readStationData(path = path2files, header.file = header.file, station = station)
+  
+  station  <- substr(station, 1, nchar(station)-1)
   
   # filter SWC data
   # for all stations SWC
