@@ -65,11 +65,11 @@ dB_getGEOtop <- function(
     {
       # make regular
       g <- zoo(x = NA, seq(head(index(data),1), tail(index(data),1), by=times("00:15:00")))
-      zoo.data <- merge(g,data)[,-1]
+      data <- merge(g,data)[,-1]
     }
+    
     # DO data quality
     var <- names(data)
-    
     
     for (i in var)
     {
@@ -77,10 +77,10 @@ dB_getGEOtop <- function(
       if (i=="Tip_Precip_Tot")
       {
         # MIN <0
-        coredata(data[,i]) <- ifelse(coredata(data[,i])<0, 0, coredata(data[,i]))
+        coredata(data[,i]) <- ifelse(coredata(data[,i]) < 0, NA, coredata(data[,i]))
         
         # MAX >100
-        coredata(data[,i]) <- ifelse(coredata(data[,i])>100, NA, coredata(data[,i]))
+        coredata(data[,i]) <- ifelse(coredata(data[,i]) > 100, NA, coredata(data[,i]))
         
         # improve precipitation quality (see ESOLIP - E.Mayr)
       }
@@ -98,35 +98,34 @@ dB_getGEOtop <- function(
       if (i=="RH")
       {
         # MIN
-        coredata(data[,i]) <- ifelse(coredata(data[,i])<0.01, NA, coredata(data[,i]))
+        coredata(data[,i]) <- ifelse(coredata(data[,i]) < 0.01, NA, coredata(data[,i]))
         # MAX
-        coredata(data[,i]) <- ifelse(coredata(data[,i])> 100, 100, coredata(data[,i]))
+        coredata(data[,i]) <- ifelse(coredata(data[,i]) > 100, 100, coredata(data[,i]))
       }
       
       # SOLAR RADIATION
       if (i=="SR_Sw")
       {
         # MIN
-        coredata(data[,i]) <- ifelse(coredata(data[,i])< 0, NA, coredata(data[,i]))
+        coredata(data[,i]) <- ifelse(coredata(data[,i]) < 0, NA, coredata(data[,i]))
         # MAX
-        coredata(data[,i]) <- ifelse(coredata(data[,i])> 1500, NA, coredata(data[,i]))
+        coredata(data[,i]) <- ifelse(coredata(data[,i]) > 1500, NA, coredata(data[,i]))
       }
       # WIND SPEED
       if (i=="Wind_Speed")
       {
         # MIN
-        coredata(data[,i]) <- ifelse(coredata(data[,i])< 0, 0, coredata(data[,i]))
+        coredata(data[,i]) <- ifelse(coredata(data[,i]) < 0, 0, coredata(data[,i]))
         # MAX
-        coredata(data[,i]) <- ifelse(coredata(data[,i])> 50, max(coredata(data[,i], na.rm=TRUE)),
-                                     coredata(data[,i]))
+        coredata(data[,i]) <- ifelse(coredata(data[,i]) > 50, NA, coredata(data[,i]))
       }
       # WIND DIRECTION
       if (i=="Wind_Dir")
       {
         # MIN
-        coredata(data[,i]) <- ifelse(coredata(data[,i])< 0, NA, coredata(data[,i]))
+        coredata(data[,i]) <- ifelse(coredata(data[,i]) < 0, NA, coredata(data[,i]))
         # MAX
-        coredata(data[,i]) <- ifelse(coredata(data[,i])> 360, NA, coredata(data[,i]))
+        coredata(data[,i]) <- ifelse(coredata(data[,i]) > 360, NA, coredata(data[,i]))
       }
       
       # SNOW HEIGHT
