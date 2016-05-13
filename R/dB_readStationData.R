@@ -5,8 +5,8 @@
 # header.file path and name headerfile
 # station    
 #e.g.
-# path <- "/mnt/alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/M/M1/"
-# header.file <- "/mnt/alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/M/header_M1.txt"
+# path <- "/media/alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/M/M3/"
+# header.file <- "/media/alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/M/header_M3.txt"
 
 dB_readStationData <- function(path, header.file, station)
 {
@@ -63,8 +63,13 @@ dB_readStationData <- function(path, header.file, station)
   {
     # change header where needed
     # M2 
-    if (i== "M2 Station total_2014_07_07_TO_2014_11_14.csv"| i=="M2 Station total_2014_11_14_TO_2015_07_09.csv") {
+    if (i == "M2 Station total_2014_07_07_TO_2014_11_14.csv"| i=="M2 Station total_2014_11_14_TO_2015_07_09.csv") {
       header.file_ <- paste(substr(header.file, 1, nchar(header.file)-13), "header_M2_2015.txt", sep="")
+      header <- as.character(read.table(header.file_, header=FALSE)[,1])
+    }
+    # M3 
+    if (i == "M3_total_2016.csv") {
+      header.file_ <- paste(substr(header.file, 1, nchar(header.file)-13), "header_M3_2016.txt", sep="")
       header <- as.character(read.table(header.file_, header=FALSE)[,1])
     }
     
