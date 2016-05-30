@@ -37,6 +37,29 @@ dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FA
     # dummy for station data
     station_data <- list()
     
+    # correct list to exclude void file
+    empty_file <- list()
+    for (f in files)
+    {
+      if (file.info(f)$size == 0)
+      {
+        empty_file[[length(empty_file)+1]] <- f
+        #empty_file = list(empty_file, c=f)
+        files <- files[files != f]
+      }
+    }
+    if (write_csv)
+    {
+      write.csv(as.data.frame(empty_file), file = file.path(output_path, paste("empty_file_list",".csv",sep="")), quote=F, row.names = F, col.names = F)
+    }else{
+      print(as.character(empty_file), quote=T)
+    }
+    if (length(files) == 0)
+    {
+      print("All given files are empty. Execution interrupted.")
+      stop()
+    }
+    
     # read data via loop over files
     for (i in files)
     {
