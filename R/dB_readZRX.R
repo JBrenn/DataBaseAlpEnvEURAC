@@ -50,7 +50,7 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
     # get time step in minutes
     if (length( grep("5A", var_name ) )==1) time_scale <- 5
     if (length( grep("10A", var_name) )==1) time_scale <- 10
-    if (length( grep("10A", var_name) )==1) time_scale <- 30
+    if (length( grep("30A", var_name) )==1) time_scale <- 30
     if (length( grep("60A", var_name) )==1) time_scale <- 60
     if (length( grep("TAG", var_name) )==1) time_scale <- 60*24
     
