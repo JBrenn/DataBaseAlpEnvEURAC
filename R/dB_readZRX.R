@@ -45,24 +45,27 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
     st_id <- substr(st_id, 5, nchar(st_id))
     
     rexchange <- strsplit( x = header[ grep("#REXCHANGE",header) ], split = ";")[[1]][1]
-    rexchange <- substr(rexchange, 11, nchar(rexchange))
+    st_id <- substr(rexchange, 11, 14)
+    #rexchange <- substr(rexchange, 11, nchar(rexchange))
     
     # get variable info
-    var_name <- strsplit( x = header[ grep("#CNAME",header) ], split = ";")[[1]][1]
-    var_name <- substr(var_name, 7, nchar(var_name))
-        
-    var_time <- strsplit( x = header[ grep("#TSNAME",header) ], split = ";")[[1]][1]
-    var_time <- substr(var_time, 9, nchar(var_time))
+    var_name <- substr(rexchange, 15, nchar(rexchange))
+    
+    # var_name <- strsplit( x = header[ grep("#CNAME",header) ], split = ";")[[1]][1]
+    # var_name <- substr(var_name, 7, nchar(var_name))
+    #     
+    # var_time <- strsplit( x = header[ grep("#TSNAME",header) ], split = ";")[[1]][1]
+    # var_time <- substr(var_time, 9, nchar(var_time))
     
     # get time step in minutes
     if (length( grep("5", var_name ) )==1) time_scale <- 5
     if (length( grep("10", var_name) )==1) time_scale <- 10
     if (length( grep("30", var_name) )==1) time_scale <- 30
     if (length( grep("60", var_name) )==1) time_scale <- 60
-    if (length( grep("TAG", var_name) )==1) time_scale <- 60*24
+    if (length( grep("TAG", var_name, ignore.case = T) )==1) time_scale <- 60*24
     
     # meta data vector
-    meta_mat <- rbind(meta_mat, c(st_id=st_id, rexchange=rexchange, st_name=st_name, var_name=var_name, 
+    meta_mat <- rbind(meta_mat, c(st_id=st_id, st_name=st_name, var_name=var_name, 
                                   time_agg=as.character(time_scale)) )
     #-----
     # get DATA
