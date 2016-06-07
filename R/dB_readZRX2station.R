@@ -40,6 +40,7 @@ dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FA
     # read data via loop over files
     for (i in files)
     {
+      print(paste("file", i, sep=" "))
       if (multivar) {
         out <- dB_readZRX(i, do.hourly = do.hourly, do.quality = do.quality, chron = chron, multivar = multivar)
         for (st in unique(out$meta[,"st_id"]))
@@ -71,8 +72,14 @@ dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FA
             } else {
               output_filename <- paste("st", st, "_", unique(out_metadata[[paste("st",st,sep="")]][,"time_agg"]), sep="")
             }
-            write.zoo( x = dummy, file = file.path(output_path, paste(output_filename,".csv",sep="")), 
-                       row.names=F, col.names=T, sep=",", quote=F, index.name="date")
+            if ( as.integer(unique(out_metadata[[paste("st",st,sep="")]][,"time_agg"])) <= 60) {
+              df <- data.frame(date = format(time(dummy), "%d/%m/%Y %H:%M:%S"), coredata(dummy))
+              write.csv(x = df)
+            } else {
+              write.zoo( x = dummy, file = file.path(output_path, paste(output_filename,".csv",sep="")), 
+                         row.names=F, col.names=T, sep=",", quote=F, index.name="date") 
+            }
+           
           }
           
           station_data[[paste("st",st,sep="")]] <- dummy
