@@ -172,8 +172,16 @@ dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FA
           } else {
             output_filename <- paste(i, unique(metadata[,"time_agg"]), sep="_")
           }
+          
+        if (as.integer(unique(metadata[,"time_agg"])) <= 60) {
+          df <- data.frame(date = format(time(dummy), "%d/%m/%Y %H:%M:%S"), coredata(dummy))
+          write.csv(x = df, file = file.path(output_path, paste(output_filename,".csv",sep="")),
+                    row.names=F, col.names=T, sep=",", quote=F)
+        } else {
           write.zoo( x = dummy, file = file.path(output_path, paste(output_filename,".csv",sep="")), 
                      row.names=F, col.names=T, sep=",", quote=F, index.name="date")
+        }
+ 
         }
         
         # save data in station data list
@@ -181,6 +189,7 @@ dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FA
       }
     }
     
+    # write meta files
     if (write_csv) 
     {
       if (length(files)==1 & !multistation) {
