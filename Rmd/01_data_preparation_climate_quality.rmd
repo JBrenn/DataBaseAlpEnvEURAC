@@ -101,18 +101,22 @@ renderLeaflet({
   rad <- rep(5, length(st_Tmax$long))
   rad[colIT] <- 10
   
+  extr_long <- input$long
+  extr_lat  <- input$lat
+  
   leaflet() %>%
    addProviderTiles("Acetate.terrain") %>%
    addTiles(options = providerTileOptions(opacity = 0.75)) %>%  # Add default OpenStreetMap map tiles
    addCircleMarkers(lng=st_Tmax$long, lat=st_Tmax$lat, popup=paste(st_Tmax$NUMMER, st_Tmax$STATION_D, ", ",  st_Tmax$HOEHE, "m a.s.l"), color = col, radius=rad, fill = F, group = "Air Temperature") %>%
     addCircleMarkers(lng=st_N$long, lat=st_N$lat, popup=paste(st_N$NUMMER, st_N$STATION_D, ", ",  st_N$HOEHE, "m a.s.l"), radius=2.3, fill = F, group = "Precipitation") %>%
-    addLayersControl(overlayGroups = c("Air Temperature", "Precipitation"),
-    options = layersControlOptions(collapsed = FALSE)
-  )
+    addCircleMarkers(lng=extr_long, lat=extr_lat, radius=2.5, fill = T, color = "red", popup = "input point") %>%
+    addLayersControl(overlayGroups = c("Air Temperature", "Precipitation"), options = layersControlOptions(collapsed = FALSE))
   })
 
 inputPanel(
-   selectInput(inputId = "station", label = "discover data from station", choices = names(T_N_southtyrol))
+   selectInput(inputId = "station", label = "discover data from station", choices = names(T_N_southtyrol)),
+   numericInput(inputId = "long", label = "longitude extra point", value = 11.5),
+   numericInput(inputId = "lat", label = "latitude extra point", value = 46.5)
 )
 
 
