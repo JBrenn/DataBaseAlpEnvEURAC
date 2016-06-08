@@ -42,8 +42,8 @@ dB_readZRX2station(files, write_csv=FALSE, output_path, do.hourly=FALSE, do.qual
   } 
 }
 \details{
-Only working correctly with .zrx file with a single time step (e.g. all files hourly data), or if do_hourly = TRUE with .zrx files with a time step below or equal to one hour. 
-For multivar = TRUE input is a single .rzx file, for multivar = FALSE input of more than one .rzx file is provided.
+Only working properly with .zrx files with a single time step (e.g. all files hourly data), or if do_hourly = TRUE with .zrx files with a time step below or equal to one hour. 
+For multivar = TRUE input is a single .rzx file with multiple variables, for multivar = FALSE input of more than one .rzx file is provided.
 }
 \value{
 %%  ~Describe the value returned
