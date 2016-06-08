@@ -23,7 +23,7 @@
 # list containing zoo objects for each station
 
 dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, 
-                               multivar=FALSE, saveRData=FALSE)
+                               multivar=FALSE, multistation=FALSE, saveRData=FALSE)
   
   {
     # source function readZRX
@@ -37,9 +37,35 @@ dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FA
     # dummy for station data
     station_data <- list()
     
+    # correct list to exclude void file
+    empty_file <- list()
+    for (f in files)
+    {
+      if (file.info(f)$size == 0)
+          {
+            empty_file[[length(empty_file)+1]] <- f
+            #empty_file = list(empty_file, c=f)
+            files <- files[files != f]
+          }
+    }
+    
+    if (write_csv) {
+        write.csv(as.data.frame(empty_file), file = file.path(output_path, paste("empty_file_list",".csv",sep="")), 
+                  quote=F, row.names = F, col.names = F)
+    } else {
+        print(as.character(empty_file), quote=T)
+    }
+    
+    if (length(files) == 0)
+    {
+      print("All given files are empty. Execution interrupted.")
+      stop()
+    }
+    
     # read data via loop over files
     for (i in files)
     {
+      print(paste("file", i, sep=" "))
       if (multivar) {
         out <- dB_readZRX(i, do.hourly = do.hourly, do.quality = do.quality, chron = chron, multivar = multivar)
         for (st in unique(out$meta[,"st_id"]))
@@ -66,13 +92,21 @@ dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FA
           if (write_csv)
           {
             #STinMetadata <- which(substr(i,3,nchar(i))==metadata[,"st_id"])
-            if (do.hourly==T & as.integer(unique(out_metadata[[paste("st",st,sep="")]][,"time_agg"])) < 60){file
+            if (do.hourly==T && as.integer(unique(out_metadata[[paste("st",st,sep="")]][,"time_agg"])) <= 60){
               output_filename <- paste("st", st, "_60", sep="")
             } else {
               output_filename <- paste("st", st, "_", unique(out_metadata[[paste("st",st,sep="")]][,"time_agg"]), sep="")
             }
-            write.zoo( x = dummy, file = file.path(output_path, paste(output_filename,".csv",sep="")), 
-                       row.names=F, col.names=T, sep=",", quote=F, index.name="date")
+            
+            if ( all(as.integer(unique(out_metadata[[paste("st",st,sep="")]][,"time_agg"])) <= 60) ) {
+              df <- data.frame(date = format(time(dummy), "%d/%m/%Y %H:%M:%S"), coredata(dummy))
+              write.csv(x = df, file =file.path(output_path, paste(output_filename,".csv",sep="")),
+                                                row.names=F, col.names=T, sep=",", quote=F)
+            } else {
+              write.zoo( x = dummy, file = file.path(output_path, paste(output_filename,".csv",sep="")), 
+                         row.names=F, col.names=T, sep=",", quote=F, index.name="date") 
+            }
+           
           }
           
           station_data[[paste("st",st,sep="")]] <- dummy
@@ -132,17 +166,25 @@ dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FA
         # name coloums of zoo object
         names(dummy) <- names(out_data)[name_spec]
         
-        # write .csv file containing station data
+      # write .csv file containing station data
         if (write_csv)
         {
           #STinMetadata <- which(substr(i,3,nchar(i))==metadata[,"st_id"])
-          if (do.hourly==T & as.integer(unique(metadata[,"time_agg"])) < 60){
+          if (do.hourly==T & as.integer(unique(metadata[,"time_agg"])) <= 60){
             output_filename <- paste(i, "60", sep="_")
           } else {
             output_filename <- paste(i, unique(metadata[,"time_agg"]), sep="_")
           }
+          
+        if (as.integer(unique(metadata[,"time_agg"])) <= 60) {
+          df <- data.frame(date = format(time(dummy), "%d/%m/%Y %H:%M:%S"), coredata(dummy))
+          write.csv(x = df, file = file.path(output_path, paste(output_filename,".csv",sep="")),
+                    row.names=F, col.names=T, sep=",", quote=F)
+        } else {
           write.zoo( x = dummy, file = file.path(output_path, paste(output_filename,".csv",sep="")), 
                      row.names=F, col.names=T, sep=",", quote=F, index.name="date")
+        }
+ 
         }
         
         # save data in station data list
@@ -150,9 +192,10 @@ dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FA
       }
     }
     
+    # write meta files
     if (write_csv) 
     {
-      if (length(files)==1) {
+      if (length(files)==1 && multistation==FALSE) {
         filen <- paste("meta_",stnames,".csv",sep="")
         write.csv(out_metadata[[1]], file.path(output_path,filen), row.names=F, quote = F)
       } else {

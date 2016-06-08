@@ -9,7 +9,7 @@ process ZRX data files (Province of Bozen/Bolzano, WISKI, batch download) with f
 }
 \usage{
 dB_readZRX2station(files, write_csv=FALSE, output_path, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, 
-                               multivar=FALSE, saveRData=FALSE)
+                               multivar=FALSE, multistation=FALSE, saveRData=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -33,13 +33,17 @@ dB_readZRX2station(files, write_csv=FALSE, output_path, do.hourly=FALSE, do.qual
   }
   \item{multivar}{
   boolean, default FALSE: single variable in .rzx file; TRUE: multiple variables in .rzx file
+  }
+  \item{multistation}{
+  boolean, default FALSE: single station in .rzx file; TRUE: multiple stations in .rzx file
   } 
   \item{saveRData}{
   boolean, default FALSE: save .RData file
   } 
 }
 \details{
-For multivar = TRUE input is a single .rzx file, for multifar = FALSE input of more than one .rzx file is provided.
+Only working properly with .zrx files with a single time step (e.g. all files hourly data), or if do_hourly = TRUE with .zrx files with a time step below or equal to one hour. 
+For multivar = TRUE input is a single .rzx file with multiple variables, for multivar = FALSE input of more than one .rzx file is provided.
 }
 \value{
 %%  ~Describe the value returned
