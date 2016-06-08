@@ -62,7 +62,7 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
     if (length( grep("10A", var_name) )==1) time_scale <- 10
     if (length( grep("30A", var_name) )==1) time_scale <- 30
     if (length( grep("60A", var_name) )==1) time_scale <- 60
-    if (length( grep("TAG", var_name, ignore.case = T) )==1) time_scale <- 60*24
+    if (length( grep("TAG", var_name) )==1 | length( grep("1440A", var_name) )==1) time_scale <- 60*24
     
     # meta data vector
     meta_mat <- rbind(meta_mat, c(st_id=st_id, st_name=st_name, var_name=var_name, 
