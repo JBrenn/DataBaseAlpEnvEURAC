@@ -147,10 +147,10 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
         data_zooreg <- ifelse(data_zooreg > 50, NA, data_zooreg)
         data_zooreg <- ifelse(data_zooreg < -50, NA, data_zooreg)
       }
-      # air temperature TD
+      # dew point TD
       if (grepl("TD", var_name)) {
         data_zooreg <- ifelse(data_zooreg > 25, NA, data_zooreg)
-        data_zooreg <- ifelse(data_zooreg < -40, NA, data_zooreg)
+        data_zooreg <- ifelse(data_zooreg < -30, NA, data_zooreg)
       }
       # for WG & WD quality check lock at 
         # Jimenez et al. (2010) - random, systematic, rough errors
