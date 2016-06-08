@@ -50,7 +50,8 @@ dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FA
     }
     
     if (write_csv) {
-        write.csv(as.data.frame(empty_file), file = file.path(output_path, paste("empty_file_list",".csv",sep="")), quote=F, row.names = F, col.names = F)
+        write.csv(as.data.frame(empty_file), file = file.path(output_path, paste("empty_file_list",".csv",sep="")), 
+                  quote=F, row.names = F, col.names = F)
     } else {
         print(as.character(empty_file), quote=T)
     }
@@ -91,14 +92,16 @@ dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FA
           if (write_csv)
           {
             #STinMetadata <- which(substr(i,3,nchar(i))==metadata[,"st_id"])
-            if (do.hourly==T & as.integer(unique(out_metadata[[paste("st",st,sep="")]][,"time_agg"])) < 60){
+            if (do.hourly==T && as.integer(unique(out_metadata[[paste("st",st,sep="")]][,"time_agg"])) <= 60){
               output_filename <- paste("st", st, "_60", sep="")
             } else {
               output_filename <- paste("st", st, "_", unique(out_metadata[[paste("st",st,sep="")]][,"time_agg"]), sep="")
             }
-            if ( as.integer(unique(out_metadata[[paste("st",st,sep="")]][,"time_agg"])) <= 60) {
+            
+            if ( all(as.integer(unique(out_metadata[[paste("st",st,sep="")]][,"time_agg"])) <= 60) ) {
               df <- data.frame(date = format(time(dummy), "%d/%m/%Y %H:%M:%S"), coredata(dummy))
-              write.csv(x = df)
+              write.csv(x = df, file =file.path(output_path, paste(output_filename,".csv",sep="")),
+                                                row.names=F, col.names=T, sep=",", quote=F)
             } else {
               write.zoo( x = dummy, file = file.path(output_path, paste(output_filename,".csv",sep="")), 
                          row.names=F, col.names=T, sep=",", quote=F, index.name="date") 
@@ -163,11 +166,11 @@ dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FA
         # name coloums of zoo object
         names(dummy) <- names(out_data)[name_spec]
         
-        # write .csv file containing station data
+      # write .csv file containing station data
         if (write_csv)
         {
           #STinMetadata <- which(substr(i,3,nchar(i))==metadata[,"st_id"])
-          if (do.hourly==T & as.integer(unique(metadata[,"time_agg"])) < 60){
+          if (do.hourly==T & as.integer(unique(metadata[,"time_agg"])) <= 60){
             output_filename <- paste(i, "60", sep="_")
           } else {
             output_filename <- paste(i, unique(metadata[,"time_agg"]), sep="_")
