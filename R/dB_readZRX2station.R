@@ -126,25 +126,36 @@ dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FA
       # get unique station IDs
       stations <- unique(stnames)
       
-      # preperation for dummy with minimal time frame 
-      t <- lapply(X = out_data, FUN = function(x){
-        lapply(X = x, FUN = function(x){
-          diff(range(time(x)))
-        })
-      })
-      t <- lapply(t, unlist)
-      min1 <- lapply(t, which.min)
-      min2 <- which.min(unlist(lapply(t, which.min)))
+      # # preperation for dummy with minimal time frame 
+      # t <- lapply(X = out_data, FUN = function(x){
+      #   lapply(X = x, FUN = function(x){
+      #     diff(range(time(x)))
+      #   })
+      # })
+      # t <- lapply(t, unlist)
+      # min1 <- lapply(t, which.min)
+      # min2 <- which.min(unlist(lapply(t, which.min)))
       
       # loop over unique station vector
       for (i in stations)
       {
+        
+        # preperation for dummy with minimal time frame 
+        t <- lapply(X = out_data[grep(substr(i,3,6),names(out_data))], FUN = function(x){
+          lapply(X = x, FUN = function(x){
+            diff(range(time(x)))
+          })
+        })
+        t <- lapply(t, unlist)
+        min1 <- lapply(t, which.min)
+        min2 <- which.min(unlist(lapply(t, which.min)))
+        
         # dummy for specific station and variable available for this station
-        dummy <- zoo(NA, time(out_data[[min2]][[min1[[min2]]]]))
+        dummy <- zoo(NA, time(out_data[grep(substr(i,3,6),names(out_data))][[min2]][[min1[[min2]]]]))
         name_spec <- c()
         
         # loop over variables
-        for (dat in names(out_data))
+        for (dat in names(out_data[grep(substr(i,3,6),names(out_data))]))
         {
           #get meta data for variable dat
           metadata <- out_metadata[[dat]]
