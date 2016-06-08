@@ -192,7 +192,7 @@ dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FA
     # write meta files
     if (write_csv) 
     {
-      if (length(files)==1 & !multistation) {
+      if (length(files)==1 && multistation==FALSE) {
         filen <- paste("meta_",stnames,".csv",sep="")
         write.csv(out_metadata[[1]], file.path(output_path,filen), row.names=F, quote = F)
       } else {
