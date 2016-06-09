@@ -175,7 +175,7 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
         data_zooreg <- ifelse(data_zooreg < 0, NA, data_zooreg)
       }
       # Precipitation NN
-      if (grepl("N", var_name)) {
+      if ( (grepl("N", var_name) && nchar(var_name)==1) | grepl('NN',var_name) ) {
         data_zooreg <- ifelse(data_zooreg < 0, NA, data_zooreg)
       }
     }
