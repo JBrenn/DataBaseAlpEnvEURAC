@@ -152,6 +152,7 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
         data_zooreg <- ifelse(data_zooreg < -50, NA, data_zooreg)
       }
       # air temperature TD
+      # could be around -70 in some extreme cases of really dry air (but maybe not in Bolzano Area)
       if (grepl("TD", var_name)) {
         data_zooreg <- ifelse(data_zooreg > 50, NA, data_zooreg)
         data_zooreg <- ifelse(data_zooreg < -50, NA, data_zooreg)
