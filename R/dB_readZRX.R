@@ -189,23 +189,20 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
       } else {
         hour <- as.POSIXct( strptime(format(time(data_zooreg), "%Y-%m-%d %H"), format= "%Y-%m-%d %H") )
       }
-      # hourly aggregation for precipitation (sum)
-      if (time_scale<60 & length(grep("N", var_name))==1)
-      {
-        data_zooreg <- aggregate(x = data_zooreg, by = hour, FUN = function (x) { if (any(is.na(x))) { 
-          y <- NA } else {
-            y <- sum(x)
-          } 
+      if (time_scale<60)
+      { 
+        # hourly aggregation for precipitation (sum)
+        if ( (grepl("N", var_name) && nchar(var_name)==1) | grepl('NN',var_name) )
+        {
+          data_zooreg <- aggregate(x = data_zooreg, by = hour, FUN = function (x) { if (any(is.na(x))) { 
+          y <- NA } else { y <- sum(x) } 
           return(y)
-        } )
+          } )
+        } else {
+        # hourly aggregation for other variables (mean)
+          data_zooreg <- aggregate(x = data_zooreg, by=hour, FUN=mean, na.rm=TRUE)
+        } 
       }
-      
-      # hourly aggregation for other variables (mean)
-      if (time_scale<60 & length(grep("N", var_name))!=1)
-      {
-        data_zooreg <- aggregate(x = data_zooreg, by=hour, FUN=mean, na.rm=TRUE)
-      } 
-    }
    
     # save data in output list
     if (multivar) {
