@@ -52,7 +52,7 @@ dB_getSWC <- function(
     # for all stations SWC
   data <- data_raw[,grep(pattern = "SWC_", x = dimnames(data_raw)[[2]])]
 
-  if (station == "B" | station == "I" | station == "P")
+  if (station == "B" | station == "I" | station == "P" | station=="DOMEF" | station=="DOMES" | station=="DOPAS")
     data <- data[,-grep(pattern = "_Std", x = dimnames(data)[[2]])]
   
   # NaN to NA
@@ -161,7 +161,7 @@ dB_getSWC <- function(
   } else {
     core5 <- core[,grep("_05", colnames(core))]
     core20 <- core[,grep("_20", colnames(core))]
-    if (station=="I" | station=="P") {
+    if (station=="I" | station=="P" | station=="DOMEF" | station=="DOMES" | station=="DOPAS") {
       core2 <- core[,grep("_02", colnames(core))]
       core <- cbind(core2, core5, core20)
     } else {
