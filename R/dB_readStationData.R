@@ -235,6 +235,7 @@ dB_readStationData <- function(path, header.file, station)
   # make regular zoo.object
   if(!is.regular(zoo.data, strict = TRUE))
   {
+    print("data set not strictly regular, look for double dates...")
     # make regular
     g <- zoo(x = NA, seq(head(index(zoo.data),1), tail(index(zoo.data),1), by=times("00:15:00")))
     zoo.data <- merge(g,zoo.data)[,-1]
