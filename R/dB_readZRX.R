@@ -50,6 +50,7 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
     
     # get variable info
     #var_name <- substr(rexchange, 15, nchar(rexchange))
+    
     var_name <- strsplit( x = header[ grep("#CNAME",header) ], split = ";")[[1]][1]
     var_name <- substr(var_name, 7, nchar(var_name))
     
@@ -175,7 +176,7 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
         data_zooreg <- ifelse(data_zooreg < 0, NA, data_zooreg)
       }
       # Precipitation NN
-      if ( (grepl("N", var_name) && nchar(var_name)==1) | grepl('NN',var_name) ) {
+      if ( (grepl("N", var_name) && nchar(var_name)==1) ) { # grepl('NN',var_name)
         data_zooreg <- ifelse(data_zooreg < 0, NA, data_zooreg)
       }
     }
@@ -192,9 +193,9 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
       if (time_scale<60)
       { 
         # hourly aggregation for precipitation (sum)
-        if ( (grepl("N", var_name) && nchar(var_name)==1) | grepl('NN',var_name) )
+        if ( (grepl("N", var_name) && nchar(var_name)==1) ) # grepl('NN',var_name)
         {
-          data_zooreg <- aggregate(x = data_zooreg, by = hour, FUN = function (x) { if (any(is.na(x))) { 
+          data_zooreg <- aggregate(x = data_zooreg, by = hour, FUN = function (x) {if (any(is.na(x))) { 
           y <- NA } else { y <- sum(x) } 
           return(y)
           } )
@@ -203,6 +204,7 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
           data_zooreg <- aggregate(x = data_zooreg, by=hour, FUN=mean, na.rm=TRUE)
         } 
       }
+    }
    
     # save data in output list
     if (multivar) {
@@ -210,7 +212,7 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
     } else {
       data_list[[paste("st",st_id,sep="")]] <- data_zooreg
     }
-    
+
   }
   
   #return function output

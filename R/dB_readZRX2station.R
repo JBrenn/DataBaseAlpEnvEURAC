@@ -60,6 +60,8 @@ dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FA
     {
       print("All given files are empty. Execution interrupted.")
       stop()
+      # Could give rise to error in case .zrx are split in some folders (i.e. if
+      # they are separated by variable), and one folder contain only empty file.
     }
     
     # read data via loop over files
@@ -125,7 +127,7 @@ dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FA
       
       # get unique station IDs
       stations <- unique(stnames)
-      
+
       # preperation for dummy with minimal time frame 
       t <- lapply(X = out_data, FUN = function(x){
         lapply(X = x, FUN = function(x){
@@ -201,7 +203,7 @@ dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FA
       } else {
         for (m in names(out_metadata))
         {
-          filen <- paste("meta_",m,".csv",sep="")
+          filen <- paste("meta_",out_metadata[[m]][1],"_",m,".csv",sep="")
           write.csv(out_metadata[[m]], file.path(output_path,filen), row.names=F, quote = F)
         }
       }
