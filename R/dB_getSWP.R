@@ -32,9 +32,9 @@ dB_getSWP <- function(
   #source("H:/Projekte/HiResAlp/06_Workspace/BrJ/04_R_data_analyses/data_base/FUN_readStationData2zoo.R")
   #source(("H:/Projekte/HiResAlp/06_Workspace/BrJ/04_R_data_analyses/FunctionsAllg/chron.R"))
   
-  station_nr <- as.integer(substr(station, nchar(station), nchar(station)))
+  station_nr <- as.integer(substr(station, nchar(station)-3, nchar(station)))
   
-  station_  <- substr(station, 1, nchar(station)-1)
+  station_  <- substr(station, 1, nchar(station)-4)
   
   if (station_ == "XS") station_ <- "S"
   

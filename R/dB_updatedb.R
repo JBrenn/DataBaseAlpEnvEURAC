@@ -4,8 +4,10 @@
 # library(chron)
 
 
-dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1","M2","M3","M4","M5","M6","M7",
-                                     "S2", "S4", "S5", "XS1", "XS6", "SF1", "SF2", "SF3", "SF4", "SF5"), 
+dB_updatedb <- function(stations = c("B0001","B0002","B0003","P0001","P0002","P0003","I0001","I0003",
+                                     "M0001","M0002","M0003","M0004","M0005","M0006","M0007",
+                                     "S0002", "S0004", "S0005", "XS0001", "XS0006", 
+                                     "SF0001", "SF0002", "SF0003", "SF0004", "SF0005"), 
                         variables = "TOTAL",
                         path2data = "/media/alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia", 
                         inCloud = "/home/jbre/ownCloud/data/SQL/",
@@ -25,12 +27,12 @@ dB_updatedb <- function(stations = c("B1","B2","B3","P1","P2","P3","I1","I3","M1
     
     for (i in stations)
     {
-      stationchr <- substr(i, 1, nchar(i)-1)
+      stationchr <- substr(i, 1, nchar(i)-4)
       stationchr_ <- stationchr
       
       if (stationchr == "XS") stationchr <- "S"
       
-      stationnr  <- as.integer(substr(i, nchar(i), nchar(i)))
+      stationnr  <- as.integer(substr(i, nchar(i)-3, nchar(i)))
       
       print(paste("updating ", j, " data of station", i, sep=" "))
       
