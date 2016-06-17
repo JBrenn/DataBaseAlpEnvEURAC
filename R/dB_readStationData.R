@@ -24,14 +24,18 @@ dB_readStationData <- function(path, header.file, station)
   header <- as.character(read.table(header.file, header=FALSE, sep=",")[,1])
   header_org <- header
 
-  station_gen <- substr(station,1,nchar(station)-1)
+  station_gen <- substr(station,1,nchar(station)-4)
 
+  if (station_gen=="BERAT") {
+    skip <- 1; date_col=2; tz="Etc/GMT+1"; time_step=times("00:05:00")
+  } else time_step <- times("00:15:00")
+  
   if (station_gen=="SF") {
     skip <- 1; date_col=2; tz="Etc/GMT+1"
   }
   if (station_gen=="B") {
     skip <- 4; date_col=1; tz="Etc/GMT-2"
-    header_final <- paste(substr(header.file, 1, nchar(header.file)-13), "header_final.txt", sep="")
+    header_final <- paste(substr(header.file, 1, nchar(header.file)-16), "header_final.txt", sep="")
     header_final <- as.character(read.table(header_final, header=FALSE)[,1])
   }
   if (station_gen=="P"| station_gen=="I") {
@@ -39,12 +43,12 @@ dB_readStationData <- function(path, header.file, station)
   }
   if (station_gen=="M" | station_gen=="S") {
     skip <- 1; date_col=2; tz="Etc/GMT+1"
-    header_final <- paste(substr(header.file, 1, nchar(header.file)-13), "header_final.txt", sep="")
+    header_final <- paste(substr(header.file, 1, nchar(header.file)-16), "header_final.txt", sep="")
     header_final <- as.character(read.table(header_final, header=FALSE)[,1])
   }
   if (station_gen=="XS") {
     skip <- 1; date_col=2; tz="Etc/GMT+1"
-    header_final <- paste(substr(header.file, 1, nchar(header.file)-14), "header_final.txt", sep="")
+    header_final <- paste(substr(header.file, 1, nchar(header.file)-17), "header_final.txt", sep="")
     header_final <- as.character(read.table(header_final, header=FALSE)[,1])
   }
   if (station=="S2") {
@@ -67,16 +71,16 @@ dB_readStationData <- function(path, header.file, station)
     # change header where needed
     # M2 
     if (i == "M2 Station total_2014_07_07_TO_2014_11_14.csv"| i=="M2 Station total_2014_11_14_TO_2015_07_09.csv") {
-      header.file_ <- paste(substr(header.file, 1, nchar(header.file)-13), "header_M2_2015.txt", sep="")
+      header.file_ <- paste(substr(header.file, 1, nchar(header.file)-16), "header_M2_2015.txt", sep="")
       header <- as.character(read.table(header.file_, header=FALSE)[,1])
     }
     # M3 
     if (i == "M3_total_2016.csv") {
-      header.file_ <- paste(substr(header.file, 1, nchar(header.file)-13), "header_M3_2016.txt", sep="")
+      header.file_ <- paste(substr(header.file, 1, nchar(header.file)-16), "header_M3_2016.txt", sep="")
       header <- as.character(read.table(header.file_, header=FALSE)[,1])
     }
     
-    nas <- c("NaN","7777","-888.88", "-999", "NAN","NA","-888.880")
+    nas <- c("NaN","7777","-888.88", "-999", "NAN","NA","-888.880", "None")
     
     # whole data frame
     if (i=="P3_YEAR_2016.csv") {
@@ -127,7 +131,6 @@ dB_readStationData <- function(path, header.file, station)
     
     # extract date and time
     
-  # differing datetime formats
     # "%Y-%m-%d %H:%M:%S"
     if (substr(as.character(dummy[1,date_col]),5,5)=="-" & nchar(as.character(dummy[1,date_col]))==19)
       datetime <- c(datetime,
@@ -237,7 +240,7 @@ dB_readStationData <- function(path, header.file, station)
   {
     print("data set not strictly regular, look for double dates...")
     # make regular
-    g <- zoo(x = NA, seq(head(index(zoo.data),1), tail(index(zoo.data),1), by=times("00:15:00")))
+    g <- zoo(x = NA, seq(head(index(zoo.data),1), tail(index(zoo.data),1), by=time_step))
     zoo.data <- merge(g,zoo.data)[,-1]
   }
   

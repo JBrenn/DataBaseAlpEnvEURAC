@@ -43,7 +43,7 @@ dB_getGEOtop <- function(
     
     print(paste("create GEOtop meteo input file for station", st, sep=" "))
     
-    stationchr <- substr(st, 1, nchar(st)-1)
+    stationchr <- substr(st, 1, nchar(st)-4)
     stationchr_ <- stationchr
     
     if (stationchr == "XS") stationchr <- "S"

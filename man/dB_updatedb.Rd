@@ -27,6 +27,7 @@ boolean, if TRUE data is written in .csv files station wise, default: FALSE
   \item{return_data}{
 boolean, if TRUE data is returned, default: TRUE
 }
+ }
 
 \value{
 List containing timer series zoo objects names as argument stations
