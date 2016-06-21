@@ -186,7 +186,8 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
     if (do.hourly)
     {
       if (chron) {
-        hour <- dB_trunc.minutes(x = time(data_zooreg), n.minutes = 60)
+        #hour <- dB_trunc.minutes(x = time(data_zooreg), n.minutes = 60)
+        hour <- floor(as.numeric(time(data_zooreg))*24)
       } else {
         hour <- as.POSIXct( strptime(format(time(data_zooreg), "%Y-%m-%d %H"), format= "%Y-%m-%d %H") )
       }
@@ -202,7 +203,8 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
         } else {
         # hourly aggregation for other variables (mean)
           data_zooreg <- aggregate(x = data_zooreg, by=hour, FUN=mean, na.rm=TRUE)
-        } 
+        }
+        if (chron) data_zooreg <- zoo(coredata(data_zooreg),  chron(time(data_zooreg)/24))
       }
     }
    
