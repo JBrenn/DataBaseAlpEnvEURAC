@@ -52,7 +52,7 @@ dB_getSWC <- function(
     # for all stations SWC
   data <- data_raw[,grep(pattern = "SWC_", x = dimnames(data_raw)[[2]])]
 
-  if (station == "B" | station == "I" | station == "P" | station=="DOMEF" | station=="DOMES" | station=="DOPAS")
+  if (station == "B" | station == "I" | station == "P" | station=="DOMEF" | station=="DOMES" | station=="DOPAS" | station=="NEMEF" )
     data <- data[,-grep(pattern = "_Std", x = dimnames(data)[[2]])]
   
   # NaN to NA

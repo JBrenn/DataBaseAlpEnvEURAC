@@ -16,7 +16,7 @@ dB_updatedb(stations, variables, path2data, inCloud, write.csv, return_data)
 character vector, station to update, e.g. c("B1", "B2", "B3"), defualt: c("B1","B2","B3","P1","P2","P3","I1","I3","M1","M2","M3","M4","M5","M6","M7","S2", "S4", "S5", "XS1", "XS6", "SF1", "SF2", "SF3", "SF4", "SF5")
 }
   \item{variables}{
-character, which variables to read, e.g "TOTAL" for unqueried data set, "METEO" for meteorological data, "SMC" for soil moisture, "TSoil" for soil temperature
+character, which variables to read, e.g "TOTAL" for unqueried data set, "METEO" for meteorological data, "SWC" for soil moisture, "TSoil" for soil temperature
 }
   \item{inCloud}{
 character, path where database is stored, if NULL database will be stored in package directory of \emph{SMCcalibration} where it is needed for plugging in the calibration tool, default: ownCloud directory data, download link.
