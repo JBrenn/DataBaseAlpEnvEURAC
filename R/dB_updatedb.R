@@ -108,16 +108,16 @@ dB_updatedb <- function(stations = c("B0001","B0002","B0003","P0001","P0002","P0
     
     dbDisconnect(db)
     
-    if (j=="SWC")
-    {
-      if (any(row.names(installed.packages())=="SMCcalibration") & !is.null(inCloud)) 
-      {
-        print("copy database swc.sqlite into data folder of the package SMCcalibration")
-        require("SMCcalibration")
-        pkg_path <- path.package("SMCcalibration") 
-        system(paste("cp", file.path(inCloud,"SWC.sqlite"), file.path(pkg_path,"data","swc.sqlite")))
-      }
-    }
+    # if (j=="SWC")
+    # {
+    #   if (any(row.names(installed.packages())=="SMCcalibration") & !is.null(inCloud)) 
+    #   {
+    #     print("copy database swc.sqlite into data folder of the package SMCcalibration")
+    #     require("SMCcalibration")
+    #     pkg_path <- path.package("SMCcalibration") 
+    #     system(paste("cp", file.path(inCloud,"SWC.sqlite"), file.path(pkg_path,"data","swc.sqlite")))
+    #   }
+    # }
   }
  
   if (return_data) return(out)
