@@ -17,7 +17,7 @@ dB_getSWP(path2data, station="B2", aggregation="n", minVALUE=-2000, maxVALUE=200
   path to meteo data
   }
    \item{station}{
-  character, name of micro-meteo station, default "B2"
+  character, name of micro-meteo station, default "B0002"
   }
   \item{aggregation}{
   character, time aggregation applied. "n" no aggregation of raw data,"h": hourly, "d": daily
