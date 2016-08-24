@@ -17,7 +17,7 @@ dB_getMETEO(path2data, station,  cols = c("Tip_Precip_Tot","Wind_Speed","Wind_Di
   path to meteo data
   }
   \item{station}{
-  station specification, e.g. "B2"
+  station specification, e.g. "B0002"
   }
   \item{cols}{
   variables to selecting for retrieving data, default: c("Tip_Precip_Tot","Wind_Speed","Wind_Dir","RH","T_Air","SR_Sw")

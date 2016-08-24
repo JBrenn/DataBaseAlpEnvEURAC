@@ -54,8 +54,8 @@ dB_readStationData <- function(path, header.file, station)
   if (station=="S2") {
     skip <- 1; date_col=2; tz="Etc/GMT+2"
   }
-  if (station_gen=="DOMEF" | station_gen=="DOMES" | station_gen=="DOPAS") {
-    skip <- 5; date_col=1; tz="Etc/GMT+1"
+  if (station_gen=="DOMEF" | station_gen=="DOMES" | station_gen=="DOPAS" | station_gen=="NEMEF") {
+    skip <- 4; date_col=1; tz="Etc/GMT+1"
   }
  
 # read data 

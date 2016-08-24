@@ -24,7 +24,7 @@ dB_getGEOtop(path2data, station,
   path to meteo data
   }
   \item{station}{
-  station specification, e.g. "B2", multiple stations are looped
+  station specification, e.g. "B0002", multiple stations are looped
   }
   \item{READvar}{
   variables to selecting for retrieving data

@@ -17,7 +17,7 @@ dB_getSoilTemp(path2data, station, aggregation="n", minVALUE=-30, maxVALUE=30, c
   path to meteo data
   }
    \item{station}{
-  character, name of micro-meteo station, e.g. "B2"
+  character, name of micro-meteo station, e.g. "B0002"
   }
   \item{aggregation}{
   character, time aggregation applied. "n" no aggregation of raw data,"h": hourly, "d": daily

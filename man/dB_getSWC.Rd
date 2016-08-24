@@ -18,7 +18,7 @@ dB_getSWC(path2data, station, calibrate=FALSE, aggregation="n",
   path to meteo files
   }
    \item{station}{
-  character, name of micro-meteo station, e.g. "B2"
+  character, name of micro-meteo station, e.g. "B0002"
   }
   \item{calibrate}{
   boolean, default FALSE: use of uncalibrated SMC data; TRUE: calibrated SMC sensor data is used for comparision with simulated SMC, calibration parameters are retrieved from the package data via \emph{data(calibration)}

@@ -44,7 +44,7 @@ dB_updatedb <- function(stations = c("B0001","B0002","B0003","P0001","P0002","P0
       }
       
       if (j == "SWC") {
-        data <- dB_getSWC(path2files, header.file, station = stationchr_, station_nr = stationnr, calibrate = F, 
+        data <- dB_getSWC(path2data, station = i, calibrate = F, 
                           minVALUE = 0, maxVALUE = 1, aggregation = "n")
         
         if(any(names(data)=="core5")) names(data)[which(names(data)=="core5")] <- "SWC_A_05"
@@ -52,7 +52,7 @@ dB_updatedb <- function(stations = c("B0001","B0002","B0003","P0001","P0002","P0
       }
       
       if (j == "TSoil") {
-        data <- dB_getSoilTemp(path2files, header.file, station = stationchr, station_nr = stationnr,
+        data <- dB_getSoilTemp(path2data, station = i,
                                minVALUE = -50, maxVALUE = 50, aggregation = "n")
         
         if(any(names(data)=="core5")) names(data)[which(names(data)=="core5")] <- "ST_A_05"
@@ -60,7 +60,7 @@ dB_updatedb <- function(stations = c("B0001","B0002","B0003","P0001","P0002","P0
       }
       
       if (j == "METEO") {
-        data <- dB_getMETEO(path2files, header.file, station = stationchr, station_nr = stationnr)
+        data <- dB_getMETEO(path2data, station = i)
       }
       
       # remove data with NA date
@@ -108,16 +108,16 @@ dB_updatedb <- function(stations = c("B0001","B0002","B0003","P0001","P0002","P0
     
     dbDisconnect(db)
     
-    if (j=="SWC")
-    {
-      if (any(row.names(installed.packages())=="SMCcalibration") & !is.null(inCloud)) 
-      {
-        print("copy database swc.sqlite into data folder of the package SMCcalibration")
-        require("SMCcalibration")
-        pkg_path <- path.package("SMCcalibration") 
-        system(paste("cp", file.path(inCloud,"SWC.sqlite"), file.path(pkg_path,"data","swc.sqlite")))
-      }
-    }
+    # if (j=="SWC")
+    # {
+    #   if (any(row.names(installed.packages())=="SMCcalibration") & !is.null(inCloud)) 
+    #   {
+    #     print("copy database swc.sqlite into data folder of the package SMCcalibration")
+    #     require("SMCcalibration")
+    #     pkg_path <- path.package("SMCcalibration") 
+    #     system(paste("cp", file.path(inCloud,"SWC.sqlite"), file.path(pkg_path,"data","swc.sqlite")))
+    #   }
+    # }
   }
  
   if (return_data) return(out)
