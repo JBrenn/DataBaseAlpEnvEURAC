@@ -8,6 +8,10 @@
 # path <- "/media/alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/M/M3/"
 # header.file <- "/media/alpenv/Projekte/HiResAlp/06_Workspace/BrJ/02_data/Station_data_Mazia/M/header_M3.txt"
 
+# path <- "C:/Users/ABalotti/Desktop/head_test/S"
+# header.file <- "C:/Users/ABalotti/Desktop/head_test/header_final.txt"
+# station <- "S0003"
+
 dB_readStationData <- function(path, header.file, station)
 {
 # load libraries
@@ -35,7 +39,7 @@ dB_readStationData <- function(path, header.file, station)
   }
   if (station_gen=="B") {
     skip <- 4; date_col=1; tz="Etc/GMT-2"
-    header_final <- paste(substr(header.file, 1, nchar(header.file)-16), "header_final.txt", sep="")
+    header_final <- paste(dirname(header.file), "/header_final.txt", sep="")
     header_final <- as.character(read.table(header_final, header=FALSE)[,1])
   }
   if (station_gen=="P"| station_gen=="I") {
@@ -43,7 +47,7 @@ dB_readStationData <- function(path, header.file, station)
   }
   if (station_gen=="M" | station_gen=="S") {
     skip <- 1; date_col=2; tz="Etc/GMT+1"
-    header_final <- paste(substr(header.file, 1, nchar(header.file)-16), "header_final.txt", sep="")
+    header_final <- paste(dirname(header.file), "/header_final.txt", sep="")
     header_final <- as.character(read.table(header_final, header=FALSE)[,1])
   }
   if (station_gen=="XS") {
@@ -53,6 +57,11 @@ dB_readStationData <- function(path, header.file, station)
   }
   if (station=="S2") {
     skip <- 1; date_col=2; tz="Etc/GMT+2"
+  }
+  if (station=="S3") {
+      skip <- 2; date_col=2; tz="Etc/GMT+1"
+      header_final <- paste(dirname(header.file), "/header_final.txt", sep="")
+      header_final <- as.character(read.table(header_final, header=FALSE)[,1])
   }
   if (station_gen=="DOMEF" | station_gen=="DOMES" | station_gen=="DOPAS" | station_gen=="NEMEF") {
     skip <- 4; date_col=1; tz="Etc/GMT+1"
@@ -68,7 +77,7 @@ dB_readStationData <- function(path, header.file, station)
 
   for (i in files)
   {
-    # change header where needed
+    # change header where needed ( vecchie label ma riordinate)
     # M2 
     if (i == "M2 Station total_2014_07_07_TO_2014_11_14.csv"| i=="M2 Station total_2014_11_14_TO_2015_07_09.csv") {
       header.file_ <- paste(substr(header.file, 1, nchar(header.file)-16), "header_M2_2015.txt", sep="")
@@ -79,6 +88,11 @@ dB_readStationData <- function(path, header.file, station)
       header.file_ <- paste(substr(header.file, 1, nchar(header.file)-16), "header_M3_2016.txt", sep="")
       header <- as.character(read.table(header.file_, header=FALSE)[,1])
     }
+    # # B2
+    # if (i == "B2_1500_YEAR_2016.csv") {
+    #   header.file_ <- paste(dirname(header.file), "/header_reord.txt", sep="")
+    #   header <- as.character(read.table(header.file_, header=FALSE)[,1])
+    # }
     
     nas <- c("NaN","7777","-888.88", "-999", "NAN","NA","-888.880", "None")
     
@@ -92,7 +106,7 @@ dB_readStationData <- function(path, header.file, station)
         i=="B1_1000_YEAR_2016.csv" | i=="B2_1500_YEAR_2016.csv" | i=="B3_2000_YEAR_2016.csv") {
         dummy <- read.csv(file.path(path,i), skip=skip, header=FALSE, dec=".",
                            na.strings = nas)
-        dummy <- dummy[,1:dim(data)[2]]
+        dummy <- dummy[,1:length(data)]
     } else if (i=="B3_2000_YEAR_2010.csv" | i=="B3_2000_YEAR_2012.csv") {
         dummy <- read.csv2(file.path(path,i), skip=skip, header=FALSE, 
                            na.strings = nas)
@@ -110,10 +124,11 @@ dB_readStationData <- function(path, header.file, station)
                         na.strings = nas)
       dummy$V12 <- NA; dummy$V13 <- NA
     } else {
-        dummy <- read.csv(file.path(path,i), skip=skip, header=FALSE, 
+        dummy <- read.csv2(file.path(path,i), skip=skip, header=FALSE, 
                           na.strings = nas)
     } 
     
+    # vecchie label ma riordinate
     if (exists("header.file_")) {
       # reorder data
       names(dummy) <- header
@@ -130,7 +145,7 @@ dB_readStationData <- function(path, header.file, station)
     }
     
     # extract date and time
-    
+    # nchar==16 -> H:M invece nchar==19 -> H:M:S
     # "%Y-%m-%d %H:%M:%S"
     if (substr(as.character(dummy[1,date_col]),5,5)=="-" & nchar(as.character(dummy[1,date_col]))==19)
       datetime <- c(datetime,
