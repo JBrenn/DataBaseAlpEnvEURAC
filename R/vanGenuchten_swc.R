@@ -19,7 +19,7 @@
 #   1 mm = 0.0980665 hPa / 0.00980665 kPa
 #   1 cm = 0.980665 hPa / 0.0980665 kPa
 
-### VARIABLE (the measure unit are to check !!!)
+### VARIABLE    NAME                    UNIT of input/ouput
 # swc           SWC (water content)     [cm^3/cm^3] [0 < x < 1] -> non-% value
 # psi           SWP (pressure head)     [cm]        [<= 0] -> forced to absolute value in computation
 # alpha         air entry suction       [cm^-1]     [> 0]
@@ -69,7 +69,7 @@ vanGenuchten_swc <- function(psi=NULL, swc=NULL, alpha, n, theta_res, theta_sat,
             
             # INVERSION FORMULA
             # geotop inversion (return negative SWP) [cm]
-            # (does square of negative value (NaN) if SWC is a percent value!!!)
+            # (produce square of negative value (NaN) if SWC is a percent value!!!)
             out <- ( ( (TETA^(-1/m))-1 )^(1/n) )*(-1/alpha)
 
             # force lower SWP value 
@@ -116,24 +116,27 @@ vanGenuchten_swc <- function(psi=NULL, swc=NULL, alpha, n, theta_res, theta_sat,
 }
 
 ### TEST CODE
-alpha = c(0.005,1.333047,1.266704)
-n = c(2,1.388409,1.398214)
-theta_res = c(0.1,0.05,0.05)
-theta_sat = c(0.5,0.5481991,0.5482869)
-swc <- runif(1000,0.1784,0.5) # put same limit as out_swc
-psi <- runif(1000,min=0,max=1000)
-k=1
-out_swc = vanGenuchten_swc(psi = psi, alpha = alpha[k], n = n[k],
-                       theta_sat = theta_sat[k], theta_res = theta_res[k])
-out_psi = vanGenuchten_swc(swc = swc, alpha = alpha[k], n = n[k],
-                        theta_sat = theta_sat[k], theta_res = theta_res[k], inv = T)
-plot(abs(psi),out_swc)
-plot(abs(out_psi),swc)
-# plot(psi)
-# plot(swc)
+# alpha = c(0.005,1.333047,1.266704)
+# n = c(2,1.388409,1.398214)
+# theta_res = c(0.1,0.05,0.05)
+# theta_sat = c(0.5,0.5481991,0.5482869)
+# swc <- runif(1000,min=0.1784,max=0.5) # put same limit as out_swc
+# # swc <- seq(from = 0.1784,to = 0.5,length.out = 1000)
+# psi <- runif(1000,min=0,max=1000)
+# # psi <- seq(from = 0,to = 1000,length.out = 1000)
+# k=1
+# out_swc = vanGenuchten_swc(psi = psi, alpha = alpha[k], n = n[k],
+#                        theta_sat = theta_sat[k], theta_res = theta_res[k])
+# out_psi = vanGenuchten_swc(swc = swc, alpha = alpha[k], n = n[k],
+#                         theta_sat = theta_sat[k], theta_res = theta_res[k], inv = T)
+# "out_psi" checked against "swc", and "out_swc" against "psi"
+# # plot pedofunction - psi NOT in log scale as usual
+# plot(abs(psi),out_swc)
+# plot(abs(out_psi),swc)
 # # plot pedofunction
-plot(swc,abs(psi),log="y")
-plot(out_swc,abs(out_psi),log="y")
+# plot(swc,abs(out_psi),log="y")
+# plot(out_swc,abs(psi),log="y")
 # # plot pF between 0-7
-# plot(swc,log((abs(psi)),base = 10),ylim=c(0,7))
+# plot(swc,log((abs(out_psi)),base = 10),ylim=c(0,7))
+# plot(out_swc,log((abs(psi)),base = 10),ylim=c(0,7))
 ###
