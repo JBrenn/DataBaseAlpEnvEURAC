@@ -12,9 +12,12 @@
 # van Genuchten inversion taken from GEOtop model "pedo.funct.c" function
 # https://github.com/geotopmodel
 # By default the function compute SWC from SWP, using "inv=TRUE" will be computed
-# the opposite.
+# the opposite. Input must be provided as:
+# SWC [0 < x < 1] the unit doesn't matter because is a ratio [m3/m3],[cm3/cm3],etc.
+# SWP [cm] people usually use the approx. 1 cm ~ 1 hPa
 # Saturation condition is considered same as unsatured in this script because
 # otherwise specific storativity (Ss) parameter is also required.
+# 
 # Conversion between column water and pressure:
 #   1 mm = 0.0980665 hPa / 0.00980665 kPa
 #   1 cm = 0.980665 hPa / 0.0980665 kPa
@@ -35,7 +38,7 @@ vanGenuchten_swc <- function(psi=NULL, swc=NULL, alpha, n, theta_res, theta_sat,
     #     # print(str(i))
     # }
     # 
-    print(c(alpha,n,theta_res,theta_sat))
+    # print(c(alpha,n,theta_res,theta_sat))
     
     # constant
     m <- 1-(1/n)        # utility variable
@@ -127,7 +130,7 @@ vanGenuchten_swc <- function(psi=NULL, swc=NULL, alpha, n, theta_res, theta_sat,
 # k=1
 # out_swc = vanGenuchten_swc(psi = psi, alpha = alpha[k], n = n[k],
 #                        theta_sat = theta_sat[k], theta_res = theta_res[k])
-# out_psi = vanGenuchten_swc(swc = swc, alpha = alpha[k], n = n[k],
+# out_psi = vanGenuchten_swc(swc = out_swc, alpha = alpha[k], n = n[k],
 #                         theta_sat = theta_sat[k], theta_res = theta_res[k], inv = T)
 # "out_psi" checked against "swc", and "out_swc" against "psi"
 # # plot pedofunction - psi NOT in log scale as usual
