@@ -87,7 +87,8 @@ dB_readZRX2station <- function(files, write_csv=FALSE, output_path, do.hourly=FA
           } else {
             dummy <- out_data[[paste("st",st,sep="")]][[1]]
           }
-          names(dummy) <- substr(names(out_data[[paste("st",st,sep="")]]), 8,nchar(names(out_data[[paste("st",st,sep="")]])))
+          # retain all parts of column name other than station name (all after first underscore)
+          names(dummy) <- sub(x = names(out_data[[paste("st",st,sep="")]]), pattern = "^.*?_", replacement = "")
           
           # write.csv
           # write .csv file containing station data

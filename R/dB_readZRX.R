@@ -56,6 +56,8 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
     
     var_time <- strsplit( x = header[ grep("#TSNAME",header) ], split = ";")[[1]][1]
     var_time <- substr(var_time, 9, nchar(var_time))
+    # Standardize name if var_time is a daily avg.
+    if (length(grep("tagmittel", var_time, ignore.case = T))==1) var_time <- "TagMittel"
     
     # get time step in minutes
     if (length( grep("5", var_time ) )==1) time_scale <- 5
@@ -71,7 +73,8 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
     
     # meta data vector
     meta_mat <- rbind(meta_mat, c(st_id=st_id, st_name=st_name, var_name=var_name, 
-                                  time_agg=as.character(time_scale)) )
+                                  time_agg=as.character(time_scale),
+                                  var_time=var_time) )
     #-----
     # get DATA
     
@@ -192,7 +195,7 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
         hour <- as.POSIXct( strptime(format(time(data_zooreg), "%Y-%m-%d %H"), format= "%Y-%m-%d %H") )
       }
       if (time_scale<60)
-      { 
+      {
         # hourly aggregation for precipitation (sum)
         if ( (grepl("N", var_name) && nchar(var_name)==1) ) # grepl('NN',var_name)
         {
@@ -210,7 +213,7 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
    
     # save data in output list
     if (multivar) {
-      data_list[[paste("st",st_id,"_",var_name,sep="")]] <- data_zooreg
+      data_list[[paste("st",st_id,"_",var_name,"_",var_time,sep="")]] <- data_zooreg
     } else {
       data_list[[paste("st",st_id,sep="")]] <- data_zooreg
     }
