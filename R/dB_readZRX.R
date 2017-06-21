@@ -45,28 +45,36 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
     st_id <- substr(st_id, 5, nchar(st_id))
     
     rexchange <- strsplit( x = header[ grep("#REXCHANGE",header) ], split = ";")[[1]][1]
-    st_id <- substr(rexchange, 11, 14)
+    #st_id <- substr(rexchange, 11, 14)
     #rexchange <- substr(rexchange, 11, nchar(rexchange))
     
     # get variable info
-    var_name <- substr(rexchange, 15, nchar(rexchange))
+    #var_name <- substr(rexchange, 15, nchar(rexchange))
     
-    # var_name <- strsplit( x = header[ grep("#CNAME",header) ], split = ";")[[1]][1]
-    # var_name <- substr(var_name, 7, nchar(var_name))
-    #     
-    # var_time <- strsplit( x = header[ grep("#TSNAME",header) ], split = ";")[[1]][1]
-    # var_time <- substr(var_time, 9, nchar(var_time))
+    var_name <- strsplit( x = header[ grep("#CNAME",header) ], split = ";")[[1]][1]
+    var_name <- substr(var_name, 7, nchar(var_name))
+    
+    var_time <- strsplit( x = header[ grep("#TSNAME",header) ], split = ";")[[1]][1]
+    var_time <- substr(var_time, 9, nchar(var_time))
+    # Standardize name if var_time is a daily avg.
+    if (length(grep("tagmittel", var_time, ignore.case = T))==1) var_time <- "TagMittel"
     
     # get time step in minutes
-    if (length( grep("5A", var_name ) )==1 | length( grep("5M", var_name ) )==1) time_scale <- 5
-    if (length( grep("10A", var_name) )==1) time_scale <- 10
-    if (length( grep("30A", var_name) )==1) time_scale <- 30
-    if (length( grep("60A", var_name) )==1) time_scale <- 60
-    if (length( grep("TAG", var_name) )==1 | length( grep("1440A", var_name) )==1) time_scale <- 60*24
+    if (length( grep("5", var_time ) )==1) time_scale <- 5
+    if (length( grep("10", var_time) )==1) time_scale <- 10
+    if (length( grep("30", var_time) )==1) time_scale <- 30
+    if (length( grep("60", var_time) )==1) time_scale <- 60
+    if (length( grep("TAG", var_time, ignore.case = T) )==1) time_scale <- 60*24
+    # if (length( grep("5A", var_name ) )==1 | length( grep("5M", var_name ) )==1) time_scale <- 5
+    # if (length( grep("10A", var_name) )==1) time_scale <- 10
+    # if (length( grep("30A", var_name) )==1) time_scale <- 30
+    # if (length( grep("60A", var_name) )==1) time_scale <- 60
+    # if (length( grep("TAG", var_name) )==1 | length( grep("1440A", var_name) )==1) time_scale <- 60*24
     
     # meta data vector
     meta_mat <- rbind(meta_mat, c(st_id=st_id, st_name=st_name, var_name=var_name, 
-                                  time_agg=as.character(time_scale)) )
+                                  time_agg=as.character(time_scale),
+                                  var_time=var_time) )
     #-----
     # get DATA
     
@@ -147,10 +155,11 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
         data_zooreg <- ifelse(data_zooreg > 50, NA, data_zooreg)
         data_zooreg <- ifelse(data_zooreg < -50, NA, data_zooreg)
       }
-      # dew point TD
+      # air temperature TD
+      # could be around -70 in some extreme cases of really dry air (but maybe not in Bolzano Area)
       if (grepl("TD", var_name)) {
-        data_zooreg <- ifelse(data_zooreg > 25, NA, data_zooreg)
-        data_zooreg <- ifelse(data_zooreg < -30, NA, data_zooreg)
+        data_zooreg <- ifelse(data_zooreg > 50, NA, data_zooreg)
+        data_zooreg <- ifelse(data_zooreg < -50, NA, data_zooreg)
       }
       # for WG & WD quality check lock at 
         # Jimenez et al. (2010) - random, systematic, rough errors
@@ -160,7 +169,7 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
       
       # wind velocity WG
       if (grepl("WG", var_name)) {
-        data_zooreg <- ifelse(data_zooreg > 35, NA, data_zooreg)
+        data_zooreg <- ifelse(data_zooreg > 40, NA, data_zooreg)
         data_zooreg <- ifelse(data_zooreg < 0, NA, data_zooreg)
     
       }
@@ -170,7 +179,7 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
         data_zooreg <- ifelse(data_zooreg < 0, NA, data_zooreg)
       }
       # Precipitation NN
-      if (grepl("NN", var_name)) {
+      if ( (grepl("N", var_name) && nchar(var_name)==1) ) { # grepl('NN',var_name)
         data_zooreg <- ifelse(data_zooreg < 0, NA, data_zooreg)
       }
     }
@@ -185,33 +194,30 @@ dB_readZRX <- function(file, do.hourly=FALSE, do.quality=FALSE, chron=TRUE, mult
       } else {
         hour <- as.POSIXct( strptime(format(time(data_zooreg), "%Y-%m-%d %H"), format= "%Y-%m-%d %H") )
       }
-      # hourly aggregation for precipitation (sum)
-      if (time_scale<60 & length(grep("N", var_name))==1)
+      if (time_scale<60)
       {
-        data_zooreg <- aggregate(x = data_zooreg, by = hour, FUN = function (x) { if (any(is.na(x))) { 
-          y <- NA } else {
-            y <- sum(x)
-          } 
+        # hourly aggregation for precipitation (sum)
+        if ( (grepl("N", var_name) && nchar(var_name)==1) ) # grepl('NN',var_name)
+        {
+          data_zooreg <- aggregate(x = data_zooreg, by = hour, FUN = function (x) {if (any(is.na(x))) { 
+          y <- NA } else { y <- sum(x) } 
           return(y)
-        } )
+          } )
+        } else {
+        # hourly aggregation for other variables (mean)
+          data_zooreg <- aggregate(x = data_zooreg, by=hour, FUN=mean, na.rm=TRUE)
+        }
+        if (chron) data_zooreg <- zoo(coredata(data_zooreg),  chron(time(data_zooreg)/24))
       }
-      
-      # hourly aggregation for other variables (mean)
-      if (time_scale<60 & length(grep("N", var_name))!=1)
-      {
-        data_zooreg <- aggregate(x = data_zooreg, by=hour, FUN=mean, na.rm=TRUE)
-      } 
-      
-      if (chron) data_zooreg <- zoo(coredata(data_zooreg),  chron(time(data_zooreg)/24))
     }
    
     # save data in output list
     if (multivar) {
-      data_list[[paste("st",st_id,"_",var_name,sep="")]] <- data_zooreg
+      data_list[[paste("st",st_id,"_",var_name,"_",var_time,sep="")]] <- data_zooreg
     } else {
       data_list[[paste("st",st_id,sep="")]] <- data_zooreg
     }
-    
+
   }
   
   #return function output
